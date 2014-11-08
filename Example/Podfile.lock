@@ -1,0 +1,26 @@
+PODS:
+  - SGASScreenRecorder (1.0.0):
+    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder
+    - SGVObjcMixin (~> 1.0)
+  - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder (1.0.0):
+    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder
+    - SGVObjcMixin (~> 1.0)
+  - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder (1.0.0):
+    - SGVBackgroundRunloop (~> 1.0)
+    - SGVObjcMixin (~> 1.0)
+  - SGVBackgroundRunloop (1.0.0)
+  - SGVObjcMixin (1.0.0)
+
+DEPENDENCIES:
+  - SGASScreenRecorder (from `../`)
+
+EXTERNAL SOURCES:
+  SGASScreenRecorder:
+    :path: ../
+
+SPEC CHECKSUMS:
+  SGASScreenRecorder: 4bed0fd3483fac301bddc1c30d8d40a9c39c43e1
+  SGVBackgroundRunloop: 1b37ed5008f7cb1728ccbfbed0426d63b909306d
+  SGVObjcMixin: 59e6c7feecc43405988330a789f09261379678e2
+
+COCOAPODS: 0.34.4
