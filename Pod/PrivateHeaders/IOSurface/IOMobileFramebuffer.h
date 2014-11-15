@@ -24,7 +24,7 @@ extern "C" {
     
     typedef kern_return_t IOMobileFramebufferReturn;
     typedef io_service_t IOMobileFramebufferService;
-    typedef io_connect_t IOMobileFramebufferConnection;
+    typedef void* IOMobileFramebufferConnection;
     
     /*! @function IOMobileFramebufferOpen
      @abstract Basically wraps IOServiceOpen, works the same way as the documented method

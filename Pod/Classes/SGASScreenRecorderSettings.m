@@ -27,7 +27,7 @@
         _compressionSettings = [@{
                                  AVVideoAverageBitRateKey      : @(512 * 1024),
                                  AVVideoProfileLevelKey        : AVVideoProfileLevelH264HighAutoLevel,
-                                 AVVideoAllowFrameReorderingKey : @NO,
+                                 AVVideoAllowFrameReorderingKey : @YES,
                                  AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
                                  AVVideoExpectedSourceFrameRateKey: @(_framesPerSecond),
                                  } mutableCopy];
