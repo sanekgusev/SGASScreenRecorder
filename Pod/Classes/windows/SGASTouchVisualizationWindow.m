@@ -28,11 +28,29 @@ static CGFloat const kDimension = 44.0f;
     return [self init];
 }
 
-#pragma mark - UIWindow
-
 #pragma mark - UIView
 
-- (void)drawRect:(CGRect)rect {
+- (void)layoutSubviews {
+    // This is a pretty questionable approach...
+    // but it works better than overriding -drawRect and just doing gradient drawing there
+    // because for *some* reason, a hidden (but not deallocated) window whose contents are
+    // drawn that way would still remain visible for some time on screen snapshots.
+    // By using this approach we can cache and reuse touch windows without them remaining on
+    // screen snapshots long after the touch has ended.
+    [self recreateImage];
+}
+
+- (CGSize)sizeThatFits:(CGSize)size {
+    return CGSizeMake(kDimension, kDimension);
+}
+
+#pragma mark - Private
+
+- (void)recreateImage {
+    CGRect rect = self.bounds;
+    UIGraphicsBeginImageContextWithOptions(rect.size,
+                                           NO,
+                                           0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     NSArray* colors = @[(id)[[UIColor blackColor] colorWithAlphaComponent:0.5f].CGColor,
@@ -50,13 +68,11 @@ static CGFloat const kDimension = 44.0f;
     CGPoint center = CGPointMake(CGRectGetMidX(rect),
                                  CGRectGetMidY(rect));
     CGContextDrawRadialGradient(context, gradient, center, 0, center, CGRectGetWidth(rect) / 2.0f, kNilOptions);
+    self.layer.contents = (__bridge_transfer id)CGBitmapContextCreateImage(context);
     
     CGGradientRelease(gradient);
     CGColorSpaceRelease(colorSpace);
-}
-
-- (CGSize)sizeThatFits:(CGSize)size {
-    return CGSizeMake(kDimension, kDimension);
+    UIGraphicsEndImageContext();
 }
 
 @end

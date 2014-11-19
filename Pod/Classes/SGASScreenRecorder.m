@@ -222,18 +222,6 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     }
     _lastFrameTime = frameTime;
     
-//    CoreSurfaceBufferRef __unused screenSurface = NULL;
-//    
-//#if TARGET_IPHONE_SIMULATOR
-//    kern_return_t getLayerResult = KERN_FAILURE;
-//#else
-//    kern_return_t getLayerResult = IOMobileFramebufferGetLayerDefaultSurface(_framebufferConnection, 0, &screenSurface);
-//#endif
-//    if (getLayerResult != KERN_SUCCESS) {
-//        NSLog(@"failed to get screen surface");
-//        return;
-//    }
-    
 //    uint32_t lockSeed;
 //    IOReturn lockResult = IOSurfaceLock(_screenSurface, kIOSurfaceLockReadOnly, &lockSeed);
 //    if (lockResult != kIOReturnSuccess) {

@@ -13,6 +13,7 @@ static CGFloat const kWindowHeight = 20.f;
 
 @interface SGASStatusBarOverlayWindow () {
     id _applicationWillChangeStatusbarOrientationObserver;
+    id _applicationDidChangeStatusbarOrientationObserver;
 }
 
 @end
@@ -24,8 +25,6 @@ static CGFloat const kWindowHeight = 20.f;
 - (instancetype)init {
     if (self = [super initWithFrame:CGRectZero]) {
         self.windowLevel = UIWindowLevelStatusBar + 1.0f;
-        
-        self.rootViewController = [UIViewController new];
         
         [self addDoubleTapRecognizer];
         
@@ -55,6 +54,21 @@ static CGFloat const kWindowHeight = 20.f;
     }
 }
 
+#pragma mark - UIView
+
+// Now you're probably wondering why.
+// I admit that I am yet to fully understand the intricacies of new iOS 8 autorotation,
+// but what happens for this window is that after interface rotation (and even after
+// UIApplicationDidChangeStatusBarFrameNotification) its frame gets adjusted
+// by some internal UIWindow logic, so that it remains visually in the same place
+// on screen but in the now updated (rotated) screen coordinates.
+// This actually makes sense, but kinda gets in our way of adjusting the frame
+// from the aforementioned notification's handler.
+// I have a feeling there are clenaer ways to handle this, but this'll do for now.
+- (void)setFrame:(CGRect)frame {
+    
+}
+
 #pragma mark - UIWindow 
 
 - (UIViewController *)rootViewController {
@@ -73,13 +87,13 @@ static CGFloat const kWindowHeight = 20.f;
             self.backgroundColor = [UIColor colorWithRed:0x4C/(CGFloat)0xFF
                                                    green:0xD9/(CGFloat)0xFF
                                                     blue:0x64/(CGFloat)0xFF
-                                                   alpha:0.1f];
+                                                   alpha:0.2f];
             break;
         case SGASStatusBarOverlayWindowStateRecording:
             self.backgroundColor = [UIColor colorWithRed:0xFF/(CGFloat)0xFF
                                                    green:0x3B/(CGFloat)0xFF
                                                     blue:0x30/(CGFloat)0xFF
-                                                   alpha:0.1f];
+                                                   alpha:0.2f];
             break;
         default:
             NSCAssert(NO, @"invalid state");
@@ -130,23 +144,22 @@ static CGFloat const kWindowHeight = 20.f;
     }
     CGRect frame = UIEdgeInsetsInsetRect(screenBounds, insets);
     if ([UIScreen instancesRespondToSelector:@selector(fixedCoordinateSpace)]) {
-        self.frame = [[[UIScreen mainScreen] coordinateSpace] convertRect:frame
-    fromCoordinateSpace:[[UIScreen mainScreen] fixedCoordinateSpace]];
+        [super setFrame:[[[UIScreen mainScreen] coordinateSpace] convertRect:frame
+    fromCoordinateSpace:[[UIScreen mainScreen] fixedCoordinateSpace]]];
     }
     else {
-        self.frame = frame;
+        [super setFrame:frame];
     }
 }
 
 - (void)subscribeForNotifications {
     __typeof(self) __weak wself = self;
-    _applicationWillChangeStatusbarOrientationObserver =
-    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification
+    _applicationDidChangeStatusbarOrientationObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidChangeStatusBarOrientationNotification
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *note) {
-                                                      UIInterfaceOrientation newOrientation = [note.userInfo[UIApplicationStatusBarOrientationUserInfoKey] integerValue];
-                                                      [wself updateFrameForNewStatusBarOrientation:newOrientation];
+                                                      [wself updateFrameForNewStatusBarOrientation:[UIApplication sharedApplication].statusBarOrientation];
                                                   }];
 }
 

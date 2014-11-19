@@ -19,7 +19,7 @@
 
 @end
 
-//static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.1;
+static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.15;
 
 @implementation SGASTouchVisualizer
 
@@ -99,34 +99,37 @@
         switch (touch.phase) {
             case UITouchPhaseBegan:{
                 touchWindow.hidden = NO;
-                touchWindow.alpha = 1.0f;
-//                touchWindow.alpha = 0.0f;
-//                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
-//                                      delay:0.0
-//                                    options:UIViewAnimationOptionAllowUserInteraction
-//                                 animations:^{
-//                                     touchWindow.alpha = 1.0f;
-//                                 } completion:nil];
+                touchWindow.alpha = 0.0f;
+                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
+                                      delay:0.0
+                                    options:UIViewAnimationOptionAllowUserInteraction
+                                 animations:^{
+                                     touchWindow.alpha = 1.0f;
+                                 } completion:nil];
             }
             case UITouchPhaseMoved:
-            case UITouchPhaseStationary:
-                touchWindow.center = [[[UIScreen mainScreen] fixedCoordinateSpace] convertPoint:[touch locationInView:mainWindow]
-                                                                            fromCoordinateSpace:mainWindow];
+            case UITouchPhaseStationary:{
+                CGPoint locationInMainWindow = [touch locationInView:mainWindow];
+                CGPoint locationInScreen = locationInMainWindow;
+                if ([UIScreen instancesRespondToSelector:@selector(fixedCoordinateSpace)]) {
+                    locationInScreen = [[[UIScreen mainScreen] fixedCoordinateSpace] convertPoint:locationInMainWindow
+                                                                              fromCoordinateSpace:mainWindow];
+                }
+                touchWindow.center = locationInScreen;
                 break;
+            }
             case UITouchPhaseCancelled:
             case UITouchPhaseEnded:{
-                touchWindow.hidden = YES;
-                touchWindow.alpha = 0.0f;
-//                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
-//                                      delay:0.0
-//                                    options:UIViewAnimationOptionAllowUserInteraction
-//                                 animations:^{
-//                                     touchWindow.alpha = 0.0f;
-//                                 } completion:^(BOOL finished) {
-//                                     touchWindow.alpha = 1.0f;
-//                                     touchWindow.hidden = YES;
-//                                     [self removeWindowForTouch:touch];
-//                                 }];
+                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
+                                      delay:0.0
+                                    options:UIViewAnimationOptionAllowUserInteraction
+                                 animations:^{
+                                     touchWindow.alpha = 0.0f;
+                                 } completion:^(BOOL finished) {
+                                     touchWindow.alpha = 1.0f;
+                                     touchWindow.hidden = YES;
+                                     [self removeWindowForTouch:touch];
+                                 }];
                 break;
             }
             default:

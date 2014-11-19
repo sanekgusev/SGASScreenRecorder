@@ -10,7 +10,7 @@
 #import "SGASScreenRecorderSettings.h"
 #import <AVFoundation/AVFoundation.h>
 
-static NSUInteger const kCameraRollMaximumVideoDimension = 1665;
+static NSUInteger const kCameraRollMaximumVideoDimension = 1660;
 
 @interface SGASScreenRecorderSettings () {
     NSMutableDictionary *_compressionSettings;
