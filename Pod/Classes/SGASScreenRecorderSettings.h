@@ -11,6 +11,6 @@
 @interface SGASScreenRecorderSettings : NSObject
 @property (nonatomic, copy) NSDictionary *compressionSettings;
 @property (nonatomic, assign) NSInteger framesPerSecond;
-@property (nonatomic, assign) float outputSizeRatio;
+@property (nonatomic, assign) NSUInteger maximumOutputVideoDimension;
 
 @end

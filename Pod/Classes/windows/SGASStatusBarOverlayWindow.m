@@ -8,10 +8,11 @@
 
 #import "SGASStatusBarOverlayWindow.h"
 
-static CGFloat const kWindowWidth = 40.f;
+static CGFloat const kWindowWidth = 35.f;
+static CGFloat const kWindowHeight = 20.f;
 
 @interface SGASStatusBarOverlayWindow () {
-    id _applicationWillChangeStatusBarFrameObserver;
+    id _applicationWillChangeStatusbarOrientationObserver;
 }
 
 @end
@@ -22,14 +23,17 @@ static CGFloat const kWindowWidth = 40.f;
 
 - (instancetype)init {
     if (self = [super initWithFrame:CGRectZero]) {
-        self.backgroundColor = [UIColor clearColor];
         self.windowLevel = UIWindowLevelStatusBar + 1.0f;
+        
+        self.rootViewController = [UIViewController new];
         
         [self addDoubleTapRecognizer];
         
         [self subscribeForNotifications];
         
-        [self updateFrameForNewStatusBarFrame:[UIApplication sharedApplication].statusBarFrame];
+        [self updateFrameForNewStatusBarOrientation:[[UIApplication sharedApplication] statusBarOrientation]];
+        
+        [self applyState];
     }
     return self;
 }
@@ -40,6 +44,15 @@ static CGFloat const kWindowWidth = 40.f;
 
 - (void)dealloc {
     [self unsubscribeFromNotifications];
+}
+
+#pragma mark - Properties
+
+- (void)setState:(SGASStatusBarOverlayWindowState)state {
+    if (_state != state) {
+        _state = state;
+        [self applyState];
+    }
 }
 
 #pragma mark - UIWindow 
@@ -54,50 +67,92 @@ static CGFloat const kWindowWidth = 40.f;
 
 #pragma mark - Private
 
-- (void)updateFrameForNewStatusBarFrame:(CGRect)statusBarFrame {
-    UIEdgeInsets insets = UIEdgeInsetsMake(0,
-                                           CGRectGetWidth(statusBarFrame) - kWindowWidth,
-                                           0,
-                                           0);
-    if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
-        if (CGRectGetMinY(statusBarFrame) > 0) {
-            insets = UIEdgeInsetsMake(0,
-                                      0,
-                                      0,
-                                      CGRectGetWidth(statusBarFrame) - kWindowWidth);
-        }
-        else if (CGRectGetMinX(statusBarFrame) > 0) {
-            insets = UIEdgeInsetsMake(CGRectGetHeight(statusBarFrame) - kWindowWidth,
-                                      0,
-                                      0,
-                                      0);
-        }
-        else if (CGRectGetHeight(statusBarFrame) > CGRectGetWidth(statusBarFrame)) {
-            insets = UIEdgeInsetsMake(0,
-                                      0,
-                                      CGRectGetHeight(statusBarFrame) - kWindowWidth,
-                                      0);
-        }
+- (void)applyState {
+    switch (_state) {
+        case SGASStatusBarOverlayWindowStateIdle:
+            self.backgroundColor = [UIColor colorWithRed:0x4C/(CGFloat)0xFF
+                                                   green:0xD9/(CGFloat)0xFF
+                                                    blue:0x64/(CGFloat)0xFF
+                                                   alpha:0.1f];
+            break;
+        case SGASStatusBarOverlayWindowStateRecording:
+            self.backgroundColor = [UIColor colorWithRed:0xFF/(CGFloat)0xFF
+                                                   green:0x3B/(CGFloat)0xFF
+                                                    blue:0x30/(CGFloat)0xFF
+                                                   alpha:0.1f];
+            break;
+        default:
+            NSCAssert(NO, @"invalid state");
+            break;
     }
-    
-    self.frame = UIEdgeInsetsInsetRect(statusBarFrame, insets);
+    self.layer.borderColor = [self.backgroundColor colorWithAlphaComponent:0.8f].CGColor;
+    self.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
+}
+
+- (void)updateFrameForNewStatusBarOrientation:(UIInterfaceOrientation)statusBarOrientation {
+    CGRect screenBounds = CGRectZero;
+    if ([UIScreen instancesRespondToSelector:@selector(fixedCoordinateSpace)]) {
+        screenBounds = [[[UIScreen mainScreen] fixedCoordinateSpace] bounds];
+    }
+    else {
+        screenBounds = [[UIScreen mainScreen] bounds];
+    }
+    UIEdgeInsets insets = UIEdgeInsetsZero;
+    switch (statusBarOrientation) {
+        case UIInterfaceOrientationPortrait:
+            insets = UIEdgeInsetsMake(0,
+                                      CGRectGetWidth(screenBounds) - kWindowWidth,
+                                      CGRectGetHeight(screenBounds) - kWindowHeight,
+                                      0);
+            break;
+        case UIInterfaceOrientationPortraitUpsideDown:
+            insets = UIEdgeInsetsMake(CGRectGetHeight(screenBounds) - kWindowHeight,
+                                      0,
+                                      0,
+                                      CGRectGetWidth(screenBounds) - kWindowWidth);
+            break;
+        case UIInterfaceOrientationLandscapeLeft:
+            insets = UIEdgeInsetsMake(0,
+                                      0,
+                                      CGRectGetHeight(screenBounds) - kWindowWidth,
+                                      CGRectGetWidth(screenBounds) - kWindowHeight);
+            break;
+        case UIInterfaceOrientationLandscapeRight:
+            insets = UIEdgeInsetsMake(CGRectGetHeight(screenBounds) - kWindowWidth,
+                                      CGRectGetWidth(screenBounds) - kWindowHeight,
+                                      0,
+                                      0);
+            break;
+        case UIInterfaceOrientationUnknown:
+        default:
+            NSCAssert(NO, @"unexpected interface orientation");
+            break;
+    }
+    CGRect frame = UIEdgeInsetsInsetRect(screenBounds, insets);
+    if ([UIScreen instancesRespondToSelector:@selector(fixedCoordinateSpace)]) {
+        self.frame = [[[UIScreen mainScreen] coordinateSpace] convertRect:frame
+    fromCoordinateSpace:[[UIScreen mainScreen] fixedCoordinateSpace]];
+    }
+    else {
+        self.frame = frame;
+    }
 }
 
 - (void)subscribeForNotifications {
     __typeof(self) __weak wself = self;
-    _applicationWillChangeStatusBarFrameObserver =
-    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarFrameNotification
+    _applicationWillChangeStatusbarOrientationObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationWillChangeStatusBarOrientationNotification
                                                       object:nil
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *note) {
-                                                      CGRect newStatusBarFrame = [note.userInfo[UIApplicationStatusBarFrameUserInfoKey] CGRectValue];
-                                                      [wself updateFrameForNewStatusBarFrame:newStatusBarFrame];
+                                                      UIInterfaceOrientation newOrientation = [note.userInfo[UIApplicationStatusBarOrientationUserInfoKey] integerValue];
+                                                      [wself updateFrameForNewStatusBarOrientation:newOrientation];
                                                   }];
 }
 
 - (void)unsubscribeFromNotifications {
-    if (_applicationWillChangeStatusBarFrameObserver) {
-        [[NSNotificationCenter defaultCenter] removeObserver:_applicationWillChangeStatusBarFrameObserver];
+    if (_applicationWillChangeStatusbarOrientationObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:_applicationWillChangeStatusbarOrientationObserver];
     }
 }
 

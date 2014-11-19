@@ -23,7 +23,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  SGASScreenRecorder: 81764f4e1468422c5f0f3b50417ce6191a3fa4c1
+  SGASScreenRecorder: b695a4b9f8e05527cc23ad8fbd84c1f931fa9dbf
   SGVBackgroundRunloop: 1b37ed5008f7cb1728ccbfbed0426d63b909306d
   SGVObjcMixin: 59e6c7feecc43405988330a789f09261379678e2
 

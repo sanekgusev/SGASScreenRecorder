@@ -10,6 +10,8 @@
 #import "SGASScreenRecorderSettings.h"
 #import <AVFoundation/AVFoundation.h>
 
+static NSUInteger const kCameraRollMaximumVideoDimension = 1665;
+
 @interface SGASScreenRecorderSettings () {
     NSMutableDictionary *_compressionSettings;
 }
@@ -23,9 +25,9 @@
 - (instancetype)init {
     if (self = [super init]) {
         _framesPerSecond = 60;
-        _outputSizeRatio = 0.8f;
+        _maximumOutputVideoDimension = kCameraRollMaximumVideoDimension;
         _compressionSettings = [@{
-                                 AVVideoAverageBitRateKey      : @(512 * 1024),
+                                 AVVideoAverageBitRateKey      : @(1024 * 1024),
                                  AVVideoProfileLevelKey        : AVVideoProfileLevelH264HighAutoLevel,
                                  AVVideoAllowFrameReorderingKey : @YES,
                                  AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,

@@ -14,6 +14,11 @@
 #import <IOSurface/IOMobileFramebuffer.h>
 #import <IOSurface/IOSurfaceAccelerator.h>
 
+typedef struct PixelSize {
+    NSUInteger width;
+    NSUInteger height;
+} PixelSize;
+
 #pragma mark - Private Declarations
 extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 
@@ -23,7 +28,6 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     
     SGVBackgroundRunloop *_backgroundRunloop;
     CADisplayLink *_displayLink;
-    NSTimeInterval _initialTimestamp;
     CMTime _lastFrameTime;
     
     dispatch_group_t _captureDispatchGroup;
@@ -33,6 +37,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     
     IOMobileFramebufferConnection _framebufferConnection;
     IOSurfaceAcceleratorRef _surfaceAccelerator;
+    
+    IOSurfaceRef _screenSurface;
 }
 
 @end
@@ -53,7 +59,7 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     self = [super init];
     if (self) {
         _settings = settings;
-        if (![self createFramebufferConnection] || ![self createSurfaceAccelerator]) {
+        if (![self createFramebufferConnection] || ![self getScreenSurface] || ![self createSurfaceAccelerator]) {
             return nil;
         }
         [self setupDispatchGroup];
@@ -107,7 +113,6 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     [self recreateBackgroundRunloop];
     [self recreateDisplayLink];
     _lastFrameTime = kCMTimeZero;
-    _initialTimestamp = [NSDate timeIntervalSinceReferenceDate];
 }
 
 - (void)stopRecording {
@@ -172,7 +177,9 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     dispatch_group_async(_captureDispatchGroup,
                          _captureDispatchQueue,
                          ^{
-                             [wself captureScreenshot];
+                             @autoreleasepool {
+                                 [wself captureScreenshot];
+                             }
                          });
 }
 
@@ -180,83 +187,89 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 
 - (void)captureScreenshot {
     if (!_pixelBufferAdaptor.assetWriterInput.readyForMoreMediaData) {
-        NSLog(@"not ready for more data");
+        NSLog(@"asset writer input not ready for media data");
         return;
     }
     
-    if (!_pixelBufferAdaptor.pixelBufferPool) {
+    if (_pixelBufferAdaptor.pixelBufferPool == NULL) {
+        NSLog(@"pixel buffer pool is null");
         return;
     }
     CVPixelBufferRef pixelBuffer = NULL;
-    CVReturn pixelBufferCreationResult = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault, _pixelBufferAdaptor.pixelBufferPool, &pixelBuffer);
+    CVReturn pixelBufferCreationResult = CVPixelBufferPoolCreatePixelBuffer(kCFAllocatorDefault,
+                                                                            _pixelBufferAdaptor.pixelBufferPool,
+                                                                            &pixelBuffer);
     if (pixelBufferCreationResult != kCVReturnSuccess) {
+        NSLog(@"failed to create a pixel buffer from pixel buffer pool");
         return;
     }
+    pixelBuffer = (CVPixelBufferRef)CFAutorelease(pixelBuffer);
 #if TARGET_IPHONE_SIMULATOR
     IOSurfaceRef surface = NULL;
 #else
     IOSurfaceRef surface = CVPixelBufferGetIOSurface(pixelBuffer);
 #endif
     if (surface == NULL) {
-        CVPixelBufferRelease(pixelBuffer);
+        NSLog(@"failed to get surface from pixel buffer");
         return;
     }
     
-    NSTimeInterval frameTimestamp = [NSDate timeIntervalSinceReferenceDate] - _initialTimestamp;
-    CMTime frameTime = CMTimeMakeWithSeconds(frameTimestamp, (int32_t)_settings.framesPerSecond);
+    CMTime frameTime = CMTimeMakeWithSeconds([NSDate timeIntervalSinceReferenceDate],
+                                             (int32_t)_settings.framesPerSecond);
     if (CMTimeCompare(_lastFrameTime, frameTime) == 0) {
-        NSLog(@"same frame times!");
-        CVPixelBufferRelease(pixelBuffer);
+        NSLog(@"new frame presentation time equals presentation frame for previous frame");
         return;
     }
     _lastFrameTime = frameTime;
-    // Take currently displayed image from the LCD
-//    IOSurfaceLock(surface, 0, NULL);
     
-//    IOMobileFramebufferConnection connect;
-    CoreSurfaceBufferRef __unused screenSurface = NULL;
+//    CoreSurfaceBufferRef __unused screenSurface = NULL;
+//    
+//#if TARGET_IPHONE_SIMULATOR
+//    kern_return_t getLayerResult = KERN_FAILURE;
+//#else
+//    kern_return_t getLayerResult = IOMobileFramebufferGetLayerDefaultSurface(_framebufferConnection, 0, &screenSurface);
+//#endif
+//    if (getLayerResult != KERN_SUCCESS) {
+//        NSLog(@"failed to get screen surface");
+//        return;
+//    }
     
-//    io_service_t framebufferService = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("AppleH1CLCD"));
-//    if(!framebufferService)
-//        framebufferService = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("AppleM2CLCD"));
-//    if(!framebufferService)
-//        framebufferService = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("AppleCLCD"));
+//    uint32_t lockSeed;
+//    IOReturn lockResult = IOSurfaceLock(_screenSurface, kIOSurfaceLockReadOnly, &lockSeed);
+//    if (lockResult != kIOReturnSuccess) {
+//        NSLog(@"failed to lock screen surface: %d", lockResult);
+//    }
     
-//    result = IOMobileFramebufferOpen(framebufferService, mach_task_self(), 0, &connect);
-    
-#if TARGET_IPHONE_SIMULATOR
-    kern_return_t getLayerResult = KERN_FAILURE;
-#else
-    kern_return_t getLayerResult = IOMobileFramebufferGetLayerDefaultSurface(_framebufferConnection, 0, &screenSurface);
-#endif
-    if (getLayerResult != KERN_SUCCESS) {
-        CVPixelBufferRelease(pixelBuffer);
-        return;
-    }
-    
-//    uint32_t aseed;
-//    IOSurfaceLock(screenSurface, kIOSurfaceLockReadOnly, &aseed);
-    
-//    IOSurfaceAcceleratorRef outAcc;
-//    IOSurfaceAcceleratorCreate(NULL, 0, &outAcc);
 #if TARGET_IPHONE_SIMULATOR
     IOSurfaceAcceleratorReturn transferSurfaceResult = kIOReturnError;
 #else
-    IOSurfaceAcceleratorReturn transferSurfaceResult = IOSurfaceAcceleratorTransferSurface(_surfaceAccelerator, (IOSurfaceRef)screenSurface, surface, NULL, NULL);
+    IOSurfaceAcceleratorReturn transferSurfaceResult =
+        IOSurfaceAcceleratorTransferSurface(_surfaceAccelerator,
+                                            _screenSurface,
+                                            surface,
+                                            NULL,
+                                            NULL);
 #endif
     if (transferSurfaceResult != kIOSurfaceAcceleratorSuccess) {
-        CVPixelBufferRelease(pixelBuffer);
+        NSLog(@"failed to copy screen surface");
         return;
     }
     
-//    IOSurfaceUnlock(screenSurface, kIOSurfaceLockReadOnly, &aseed);
-    
-//    CFRelease(outAcc);
-//    IOSurfaceUnlock(surface, 0, NULL);
+//    uint32_t unlockSeed;
+//    IOReturn unlockResult = IOSurfaceUnlock(_screenSurface, kIOSurfaceLockReadOnly, &unlockSeed);
+//    if (unlockResult != kIOReturnSuccess) {
+//        NSLog(@"failed to unlock screen surface: %d", unlockResult);
+//    }
+//    if (unlockSeed != lockSeed) {
+//        NSLog(@"seeds for screen surface do not match — surface has been modified during copy");
+//        return;
+//    }
     
     BOOL pixelBufferAppendResult = [_pixelBufferAdaptor appendPixelBuffer:pixelBuffer
                                                      withPresentationTime:frameTime];
-    CVPixelBufferRelease(pixelBuffer);
+    if (!pixelBufferAppendResult) {
+        NSLog(@"failed to append pixel buffer");
+    }
 }
 
 #pragma mark - Encoding
@@ -275,24 +288,54 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     if (!framebufferService) {
         framebufferService = IOServiceGetMatchingService(kIOMasterPortDefault, IOServiceMatching("AppleMobileCLCD"));
     }
+    if (!framebufferService) {
+        NSLog(@"failed to create framebuffer service");
+        return NO;
+    }
     
     kern_return_t result = IOMobileFramebufferOpen(framebufferService, mach_task_self(), 0, &_framebufferConnection);
-    return result == KERN_SUCCESS;
+    if (result != KERN_SUCCESS) {
+        NSLog(@"failed to open framebuffer");
+        return NO;
+    }
+    return YES;
 #endif
 }
 
 - (void)destroyFramebufferConnection {
 #if !TARGET_IPHONE_SIMULATOR
-    IOServiceClose(_framebufferConnection);
+    IOServiceClose((io_connect_t)_framebufferConnection);
     _framebufferConnection = 0;
 #endif
+}
+
+- (BOOL)getScreenSurface {
+    CoreSurfaceBufferRef screenSurface = NULL;
+    
+#if TARGET_IPHONE_SIMULATOR
+    kern_return_t getLayerResult = KERN_FAILURE;
+#else
+    kern_return_t getLayerResult = IOMobileFramebufferGetLayerDefaultSurface(_framebufferConnection, 0, &screenSurface);
+#endif
+    if (getLayerResult != KERN_SUCCESS) {
+        NSLog(@"failed to get screen surface");
+        return NO;
+    }
+    
+    _screenSurface = (IOSurfaceRef)screenSurface;
+    return YES;
 }
 
 - (BOOL)createSurfaceAccelerator {
 #if TARGET_IPHONE_SIMULATOR
     return NO;
 #else
-    return IOSurfaceAcceleratorCreate(kCFAllocatorDefault, 0, &_surfaceAccelerator) == kIOSurfaceAcceleratorSuccess;
+    IOSurfaceAcceleratorReturn result = IOSurfaceAcceleratorCreate(kCFAllocatorDefault, 0, &_surfaceAccelerator);
+    if (result != kIOSurfaceAcceleratorSuccess) {
+        NSLog(@"failed to create surface accelerator");
+        return NO;
+    }
+    return YES;
 #endif
 }
 
@@ -303,14 +346,22 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     }
 }
 
-- (CGSize)frameBufferSize {
-    // FIXME: use a more consistent approach
-    if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
-        return [[UIScreen mainScreen] nativeBounds].size;
+- (PixelSize)screenPixelSize {
+#if TARGET_IPHONE_SIMULATOR
+    return (PixelSize){0,0};
+#else
+    IOSurfaceRef screenSurface = NULL;
+    kern_return_t getLayerResult = IOMobileFramebufferGetLayerDefaultSurface(_framebufferConnection,
+                                                                             0,
+                                                                             (CoreSurfaceBufferRef *)&screenSurface);
+    if (getLayerResult != KERN_SUCCESS) {
+        NSLog(@"failed to get default surface");
+        return (PixelSize){0, 0};
     }
-    CGFloat scale = [UIScreen mainScreen].scale;
-    return CGSizeApplyAffineTransform([UIScreen mainScreen].bounds.size,
-                                            CGAffineTransformMakeScale(scale, scale));
+    size_t width = IOSurfaceGetWidth(screenSurface);
+    size_t height = IOSurfaceGetHeight(screenSurface);
+    return (PixelSize){width, height};
+#endif
 }
 
 - (BOOL)setupVideoWriter {
@@ -347,10 +398,10 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     [_backgroundRunloop performBlock:^{
         __typeof(self) sself = wself;
         if (sself) {
-            sself->_displayLink = [CADisplayLink displayLinkWithTarget:sself
-                                                             selector:@selector(displayLinkFired:)];
+            sself->_displayLink = [[UIScreen mainScreen] displayLinkWithTarget:self
+                                                                      selector:@selector(displayLinkFired:)];
             [sself->_displayLink addToRunLoop:[NSRunLoop currentRunLoop]
-                                     forMode:NSRunLoopCommonModes];
+                                      forMode:NSRunLoopCommonModes];
         }
     }];
 }
@@ -366,23 +417,37 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     }];
 }
 
-- (NSDictionary *)outputSettingsForVideoWriterWithFramebufferSize:(CGSize)framebufferSize {
+- (NSDictionary *)outputSettingsForVideoWriterWithScreenPixelSize:(PixelSize)screenPixelSize {
     
     // Setup output settings, Codec, Width, Height, Compression
-    NSInteger videowidth = (NSInteger)round(framebufferSize.width * _settings.outputSizeRatio);
-    NSInteger videoheight = (NSInteger)round(framebufferSize.height * _settings.outputSizeRatio);
+    NSUInteger outputWidth = screenPixelSize.width;
+    NSUInteger outputHeight = screenPixelSize.height;
+    if (outputWidth > outputHeight) {
+        if (outputWidth > _settings.maximumOutputVideoDimension) {
+            double heightToWidthRatio = (double)outputHeight / (double)outputWidth;
+            outputWidth = _settings.maximumOutputVideoDimension;
+            outputHeight = (NSUInteger)round(outputWidth * heightToWidthRatio);
+        }
+    }
+    else {
+        if (outputHeight > _settings.maximumOutputVideoDimension) {
+            double widthToHeightRatio = (double)outputWidth / (double)outputHeight;
+            outputHeight = _settings.maximumOutputVideoDimension;
+            outputWidth = (NSUInteger)round(outputHeight * widthToHeightRatio);
+        }
+    }
 
     return @{
         AVVideoCodecKey                 : AVVideoCodecH264,
-        AVVideoWidthKey                 : @(videowidth),
-        AVVideoHeightKey                : @(videoheight),
+        AVVideoWidthKey                 : @(outputWidth),
+        AVVideoHeightKey                : @(outputHeight),
         AVVideoCompressionPropertiesKey : _settings.compressionSettings,
     };
 }
 
 - (void)setupVideoContext {
     
-    CGSize framebufferSize = [self frameBufferSize];
+    PixelSize screenPixelSize = [self screenPixelSize];
     
     if (![self setupVideoWriter]) {
         return;
@@ -391,7 +456,7 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     // Makes sure AVAssetWriter is valid (check check check)
     NSCAssert(_videoWriter, @"_videoWriter should be created");
     
-    NSDictionary *outputSettings = [self outputSettingsForVideoWriterWithFramebufferSize:framebufferSize];
+    NSDictionary *outputSettings = [self outputSettingsForVideoWriterWithScreenPixelSize:screenPixelSize];
     
     NSCAssert([_videoWriter canApplyOutputSettings:outputSettings
                                       forMediaType:AVMediaTypeVideo],
@@ -410,8 +475,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     // Setup buffer attributes, PixelFormatType, PixelBufferWidth, PixelBufferHeight, PixelBufferMemoryAlocator
     NSDictionary *bufferAttributes = @{
         (id)kCVPixelBufferPixelFormatTypeKey : @(kCVPixelFormatType_32BGRA),
-        (id)kCVPixelBufferWidthKey           : @(framebufferSize.width),
-        (id)kCVPixelBufferHeightKey          : @(framebufferSize.height),
+        (id)kCVPixelBufferWidthKey           : @(screenPixelSize.width),
+        (id)kCVPixelBufferHeightKey          : @(screenPixelSize.height),
         (id)kCVPixelBufferIOSurfacePropertiesKey : @{},
     };
     
@@ -422,7 +487,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     //Start a session:
     [videoWriterInput setExpectsMediaDataInRealTime:YES];
     [_videoWriter startWriting];
-    [_videoWriter startSessionAtSourceTime:kCMTimeZero];
+    [_videoWriter startSessionAtSourceTime:CMTimeMakeWithSeconds([NSDate timeIntervalSinceReferenceDate],
+                                                                 (int32_t)_settings.framesPerSecond)];
     
     NSCAssert(_pixelBufferAdaptor.pixelBufferPool != NULL, @"pixelBufferPool should not be NULL");
 }

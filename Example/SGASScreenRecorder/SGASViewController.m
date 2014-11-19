@@ -13,6 +13,8 @@
     
 }
 
+@property (nonatomic, strong) IBOutlet UIWebView *webView;
+
 @end
 
 @implementation SGASViewController
@@ -23,11 +25,19 @@
 	// Do any additional setup after loading the view, typically from a nib.
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.theverge.com"]]];
 }
+
+- (NSUInteger)supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskAll;
+}
+
+- (BOOL)shouldAutorotate {
+    return YES;
+}
+
 - (IBAction)toggleButtonAction {
     [SGASScreenRecorderUIManager sharedManager].enabled = ![SGASScreenRecorderUIManager sharedManager].enabled;
 }

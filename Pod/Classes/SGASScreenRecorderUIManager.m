@@ -11,11 +11,6 @@
 #import "SGASPhotoLibraryScreenRecorder.h"
 #import "SGASTouchVisualizer.h"
 
-typedef NS_ENUM(NSInteger, OverlayWindowState) {
-    OverlayWindowStateIdle,
-    OverlayWindowStateRecording,
-};
-
 @interface SGASScreenRecorderUIManager ()<UIAlertViewDelegate,
 SGASStatusBarOverlayWindowDelegate> {
     SGASPhotoLibraryScreenRecorder * _screenRecorder;
@@ -46,7 +41,6 @@ SGASStatusBarOverlayWindowDelegate> {
             _overlayWindow = [SGASStatusBarOverlayWindow new];
             _overlayWindow.tapDelegate = self;
             _overlayWindow.hidden = NO;
-            [self setOverlayWindowState:OverlayWindowStateIdle];
         }
         else {
             _screenRecorder.completionBlock = nil;
@@ -59,11 +53,6 @@ SGASStatusBarOverlayWindowDelegate> {
 
 #pragma mark - Private
 
-- (void)setOverlayWindowState:(OverlayWindowState)state {
-    _overlayWindow.backgroundColor = [state == OverlayWindowStateIdle ?
-                                      [UIColor greenColor] : [UIColor redColor] colorWithAlphaComponent:0.4f];
-}
-
 - (void)recreateScreenRecorder {
     _screenRecorder = [SGASPhotoLibraryScreenRecorder new];
     __typeof(self) __weak wself = self;
@@ -73,7 +62,7 @@ SGASStatusBarOverlayWindowDelegate> {
             dispatch_async(dispatch_get_main_queue(), ^{
                 sself->_screenRecorder = nil;
                 [SGASTouchVisualizer sharedVisualizer].visualizesTouches = NO;
-                [sself setOverlayWindowState:OverlayWindowStateIdle];
+                sself->_overlayWindow.state = SGASStatusBarOverlayWindowStateIdle;
             });
         }
     };
@@ -81,7 +70,7 @@ SGASStatusBarOverlayWindowDelegate> {
 
 #pragma mark - SGASStatusBarOverlayWindowDelegate
 - (void)statusBarOverlayWindowDidReceiveDoubleTap:(SGASStatusBarOverlayWindow *)window {
-    if (_screenRecorder.recording) { //TODO: recording or saving?
+    if (_screenRecorder.recording) { //TODO: replace with recording OR saving check?
         _screenRecorder.recording = NO;
     }
     else {
@@ -100,7 +89,7 @@ SGASStatusBarOverlayWindowDelegate> {
         [self recreateScreenRecorder];
         [SGASTouchVisualizer sharedVisualizer].visualizesTouches = YES;
         _screenRecorder.recording = YES;
-        [self setOverlayWindowState:OverlayWindowStateRecording];
+        _overlayWindow.state = SGASStatusBarOverlayWindowStateRecording;
     }
 }
 

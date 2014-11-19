@@ -19,7 +19,7 @@
 
 @end
 
-static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.1;
+//static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.1;
 
 @implementation SGASTouchVisualizer
 
@@ -94,35 +94,39 @@ static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.1;
     UIWindow *mainWindow = [[UIApplication sharedApplication] windows].firstObject;
     for (UITouch *touch in [event allTouches]) {
         
-        SGASTouchVisualizationWindow *tapWindow = [self tapWindowForTouch:touch];
+        SGASTouchVisualizationWindow *touchWindow = [self windowForTouch:touch];
         
         switch (touch.phase) {
             case UITouchPhaseBegan:{
-                tapWindow.hidden = NO;
-                tapWindow.alpha = 0.0f;
-                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
-                                      delay:0.0
-                                    options:UIViewAnimationOptionAllowUserInteraction
-                                 animations:^{
-                                     tapWindow.alpha = 1.0f;
-                                 } completion:nil];
+                touchWindow.hidden = NO;
+                touchWindow.alpha = 1.0f;
+//                touchWindow.alpha = 0.0f;
+//                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
+//                                      delay:0.0
+//                                    options:UIViewAnimationOptionAllowUserInteraction
+//                                 animations:^{
+//                                     touchWindow.alpha = 1.0f;
+//                                 } completion:nil];
             }
             case UITouchPhaseMoved:
             case UITouchPhaseStationary:
-                tapWindow.center = [touch locationInView:mainWindow];
+                touchWindow.center = [[[UIScreen mainScreen] fixedCoordinateSpace] convertPoint:[touch locationInView:mainWindow]
+                                                                            fromCoordinateSpace:mainWindow];
                 break;
             case UITouchPhaseCancelled:
             case UITouchPhaseEnded:{
-                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
-                                      delay:0.0
-                                    options:UIViewAnimationOptionAllowUserInteraction
-                                 animations:^{
-                                     tapWindow.alpha = 0.0f;
-                                 } completion:^(BOOL finished) {
-                                     tapWindow.alpha = 1.0f;
-                                     tapWindow.hidden = YES;
-                                     [self removeTapWindowForTouch:touch];
-                                 }];
+                touchWindow.hidden = YES;
+                touchWindow.alpha = 0.0f;
+//                [UIView animateWithDuration:kTouchFadeInFadeOutDuration
+//                                      delay:0.0
+//                                    options:UIViewAnimationOptionAllowUserInteraction
+//                                 animations:^{
+//                                     touchWindow.alpha = 0.0f;
+//                                 } completion:^(BOOL finished) {
+//                                     touchWindow.alpha = 1.0f;
+//                                     touchWindow.hidden = YES;
+//                                     [self removeWindowForTouch:touch];
+//                                 }];
                 break;
             }
             default:
@@ -132,7 +136,7 @@ static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.1;
     }
 }
 
-- (SGASTouchVisualizationWindow *)tapWindowForTouch:(UITouch *)touch {
+- (SGASTouchVisualizationWindow *)windowForTouch:(UITouch *)touch {
     SGASTouchVisualizationWindow *tapWindow = [_windowsForTouches objectForKey:touch];
     if (!tapWindow) {
         tapWindow = [_reusableWindows anyObject];
@@ -147,7 +151,7 @@ static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.1;
     return tapWindow;
 }
 
-- (void)removeTapWindowForTouch:(UITouch *)touch {
+- (void)removeWindowForTouch:(UITouch *)touch {
     SGASTouchVisualizationWindow *tapWindow = [_windowsForTouches objectForKey:touch];
     [_windowsForTouches removeObjectForKey:touch];
     [_reusableWindows addObject:tapWindow];

@@ -18,6 +18,7 @@ static CGFloat const kDimension = 44.0f;
     if (self) {
         self.windowLevel = UIWindowLevelStatusBar + 2.0f;
         self.backgroundColor = [UIColor clearColor];
+        self.userInteractionEnabled = NO;
         [self sizeToFit];
     }
     return self;
@@ -27,20 +28,24 @@ static CGFloat const kDimension = 44.0f;
     return [self init];
 }
 
+#pragma mark - UIWindow
+
 #pragma mark - UIView
 
 - (void)drawRect:(CGRect)rect {
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    NSArray* colors = @[(id)[[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor,
+    NSArray* colors = @[(id)[[UIColor blackColor] colorWithAlphaComponent:0.5f].CGColor,
+                        (id)[[UIColor blackColor] colorWithAlphaComponent:0.5f].CGColor,
                         (id)[[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor,
-                        (id)[[UIColor darkGrayColor] colorWithAlphaComponent:0.4f].CGColor,
-                        (id)[[UIColor darkGrayColor] colorWithAlphaComponent:0.4f].CGColor,
-                        (id)[[UIColor lightGrayColor] colorWithAlphaComponent:0.4f].CGColor,
-                        (id)[[UIColor lightGrayColor] colorWithAlphaComponent:0.4f].CGColor,
-                        (id)[[UIColor grayColor] colorWithAlphaComponent:0.4f].CGColor,
-                        (id)[[UIColor grayColor] colorWithAlphaComponent:0.3f].CGColor];
-    CGFloat locations[] = {0.0f, 0.03f, 0.04f, 0.33f, 0.34f, 0.66f, 0.67f, 1.0f};
+                        (id)[[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor,
+                        (id)[UIColor clearColor].CGColor,
+                        (id)[UIColor clearColor].CGColor,
+                        (id)[[UIColor blackColor] colorWithAlphaComponent:0.5f].CGColor,
+                        (id)[[UIColor blackColor] colorWithAlphaComponent:0.5f].CGColor,
+                        (id)[[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor,
+                        (id)[[UIColor whiteColor] colorWithAlphaComponent:0.5f].CGColor];
+    CGFloat locations[] = {0.0f, 0.1f, 0.101f, 0.2f, 0.201f, 0.8f, 0.801f, 0.9f, 0.901f, 1.0f};
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
     CGPoint center = CGPointMake(CGRectGetMidX(rect),
                                  CGRectGetMidY(rect));
