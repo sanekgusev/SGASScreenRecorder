@@ -59,7 +59,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     self = [super init];
     if (self) {
         _settings = settings;
-        if (![self createFramebufferConnection] || ![self getScreenSurface] || ![self createSurfaceAccelerator]) {
+        if (![self createFramebufferConnection] || ![self getScreenSurface] ||
+            ![self createSurfaceAccelerator]) {
             return nil;
         }
         [self setupDispatchGroup];
@@ -330,16 +331,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 #if TARGET_IPHONE_SIMULATOR
     return (PixelSize){0,0};
 #else
-    IOSurfaceRef screenSurface = NULL;
-    kern_return_t getLayerResult = IOMobileFramebufferGetLayerDefaultSurface(_framebufferConnection,
-                                                                             0,
-                                                                             (CoreSurfaceBufferRef *)&screenSurface);
-    if (getLayerResult != KERN_SUCCESS) {
-        NSLog(@"failed to get default surface");
-        return (PixelSize){0, 0};
-    }
-    size_t width = IOSurfaceGetWidth(screenSurface);
-    size_t height = IOSurfaceGetHeight(screenSurface);
+    size_t width = IOSurfaceGetWidth(_screenSurface);
+    size_t height = IOSurfaceGetHeight(_screenSurface);
     return (PixelSize){width, height};
 #endif
 }
