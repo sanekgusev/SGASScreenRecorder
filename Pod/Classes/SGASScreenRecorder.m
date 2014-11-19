@@ -88,15 +88,6 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 #endif
 }
 
-+ (instancetype)defaultRecorder {
-    static dispatch_once_t onceToken;
-    static SGASScreenRecorder *defaultRecorder = nil;
-    dispatch_once(&onceToken, ^{
-        defaultRecorder = [SGASScreenRecorder new];
-    });
-    return defaultRecorder;
-}
-
 - (void)startRecordingToFileAtURL:(NSURL *)videoFileURL {
     NSCParameterAssert([videoFileURL isFileURL]);
     if (![videoFileURL isFileURL]) {
@@ -292,6 +283,7 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 
 - (void)destroyFramebufferConnection {
 #if !TARGET_IPHONE_SIMULATOR
+    // FIXME: Find out if a frameebuffer connection can/should be released like that
     IOServiceClose((io_connect_t)_framebufferConnection);
     _framebufferConnection = 0;
 #endif

@@ -43,17 +43,6 @@
     return [self initWithSettings:[SGASScreenRecorderSettings new]];
 }
 
-#pragma mark - Singleton
-
-+ (instancetype)defaultRecorder {
-    static SGASPhotoLibraryScreenRecorder *Recorder = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        Recorder = [self new];
-    });
-    return Recorder;
-}
-
 #pragma mark - Properties
 
 - (void)setRecording:(BOOL)recording {

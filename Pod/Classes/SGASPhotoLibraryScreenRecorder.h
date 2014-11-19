@@ -18,7 +18,6 @@ typedef void(^SGASPhotoLibraryScreenRecorderCompletionBlock)(NSURL *videoAssetUR
 @property (nonatomic, assign, getter=isRecording) BOOL recording;
 @property (nonatomic, strong) SGASPhotoLibraryScreenRecorderCompletionBlock completionBlock;
 
-+ (instancetype)defaultRecorder;
 - (instancetype)initWithSettings:(SGASScreenRecorderSettings *)settings NS_DESIGNATED_INITIALIZER;
 
 @end
