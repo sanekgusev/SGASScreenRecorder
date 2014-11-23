@@ -13,21 +13,21 @@
 static NSUInteger const kCameraRollMaximumVideoDimension = 1660;
 
 @interface SGASScreenRecorderSettings () {
-    NSMutableDictionary *_compressionSettings;
+    NSMutableDictionary *_videoCompressionProperties;
 }
 
 @end
 
 @implementation SGASScreenRecorderSettings
 
-@synthesize compressionSettings = _compressionSettings;
+@synthesize videoCompressionProperties = _videoCompressionProperties;
 
 - (instancetype)init {
     if (self = [super init]) {
         _framesPerSecond = 60;
-        _maximumOutputVideoDimension = kCameraRollMaximumVideoDimension;
-        _compressionSettings = [@{
-                                 AVVideoAverageBitRateKey      : @(1024 * 1024),
+        _maximumVideoDimension = kCameraRollMaximumVideoDimension;
+        _videoCompressionProperties = [@{
+                                 AVVideoAverageBitRateKey      : @(2048 * 1024),
                                  AVVideoProfileLevelKey        : AVVideoProfileLevelH264HighAutoLevel,
                                  AVVideoAllowFrameReorderingKey : @YES,
                                  AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
@@ -37,9 +37,14 @@ static NSUInteger const kCameraRollMaximumVideoDimension = 1660;
     return self;
 }
 
-- (void)setFramesPerSecond:(NSInteger)framesPerSecond {
+- (void)setFramesPerSecond:(NSUInteger)framesPerSecond {
     _framesPerSecond = framesPerSecond;
-    _compressionSettings[AVVideoExpectedSourceFrameRateKey] = @(_framesPerSecond);
+    _videoCompressionProperties[AVVideoExpectedSourceFrameRateKey] = @(_framesPerSecond);
+}
+
+- (void)setVideoCompressionProperties:(NSDictionary *)videoCompressionProperties {
+    _videoCompressionProperties = [videoCompressionProperties mutableCopy];
+    _videoCompressionProperties[AVVideoExpectedSourceFrameRateKey] = @(_framesPerSecond);
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import "SGASStatusBarOverlayWindow.h"
 
-static CGFloat const kWindowWidth = 35.f;
+static CGFloat const kWindowWidth = 40.f;
 static CGFloat const kWindowHeight = 20.f;
 
 @interface SGASStatusBarOverlayWindow () {

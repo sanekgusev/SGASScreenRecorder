@@ -14,15 +14,15 @@
 typedef void(^SGASScreenRecorderCompletionBlock)(NSURL *videoFileURL);
 
 @interface SGASScreenRecorder : NSObject
-@property (nonatomic, readonly) SGASScreenRecorderSettings *settings;
+@property (nonatomic, readonly) SGASScreenRecorderSettings *lastRecordingSettings;
+@property (nonatomic, readonly) NSURL *lastRecordingVideoFileURL;
+
 @property (nonatomic, readonly, getter=isRecording) BOOL recording;
-@property (nonatomic, readonly) NSURL *lastRecordedVideoFileURL;
-@property (nonatomic, assign) BOOL shouldStopRecordingWhenMovingToBackground;
+
 @property (nonatomic, strong) SGASScreenRecorderCompletionBlock completionBlock;
 
-- (instancetype)initWithSettings:(SGASScreenRecorderSettings *)settings NS_DESIGNATED_INITIALIZER;
-
-- (void)startRecordingToFileAtURL:(NSURL *)videoFileURL;
+- (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings
+                       toFileAtURL:(NSURL *)videoFileURL;
 - (void)stopRecording;
 
 + (BOOL)isSupported;

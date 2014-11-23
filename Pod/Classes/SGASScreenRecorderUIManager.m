@@ -54,7 +54,7 @@ SGASStatusBarOverlayWindowDelegate> {
 #pragma mark - Private
 
 - (void)recreateScreenRecorder {
-    _screenRecorder = [SGASPhotoLibraryScreenRecorder new];
+    _screenRecorder = [[SGASPhotoLibraryScreenRecorder alloc] initWithSettings:[SGASScreenRecorderSettings new]];
     __typeof(self) __weak wself = self;
     _screenRecorder.completionBlock = ^(NSURL *assetURL, NSError *error) {
         __typeof(self) sself = wself;

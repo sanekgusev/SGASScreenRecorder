@@ -9,8 +9,8 @@
 #import <Foundation/Foundation.h>
 
 @interface SGASScreenRecorderSettings : NSObject
-@property (nonatomic, copy) NSDictionary *compressionSettings;
-@property (nonatomic, assign) NSInteger framesPerSecond;
-@property (nonatomic, assign) NSUInteger maximumOutputVideoDimension;
+@property (nonatomic, copy) NSDictionary *videoCompressionProperties;
+@property (nonatomic, assign) NSUInteger framesPerSecond;
+@property (nonatomic, assign) NSUInteger maximumVideoDimension;
 
 @end

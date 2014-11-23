@@ -19,7 +19,6 @@
 
 @implementation SGASPhotoLibraryScreenRecorder
 
-@dynamic settings;
 @dynamic recording;
 
 #pragma mark - Init/dealloc
@@ -33,14 +32,16 @@
         return nil;
     }
     if (self = [super init]) {
-        [self setupAssetsLibraryAndScreenRecorderWithSettings:settings];
+        _settings = settings;
+        [self setupAssetsLibraryAndScreenRecorder];
         [self setupDateFormatter];
     }
     return self;
 }
 
 - (instancetype)init {
-    return [self initWithSettings:[SGASScreenRecorderSettings new]];
+    [self doesNotRecognizeSelector:_cmd];
+    return [self initWithSettings:nil];
 }
 
 #pragma mark - Properties
@@ -48,7 +49,8 @@
 - (void)setRecording:(BOOL)recording {
     if (recording) {
         NSCAssert(!_screenRecorder.recording, @"screen recorder is already recording");
-        [_screenRecorder startRecordingToFileAtURL:[self generatedTemporaryVideoFileURL]];
+        [_screenRecorder startRecordingWithSettings:_settings
+                                        toFileAtURL:[self generatedTemporaryVideoFileURL]];
     }
     else {
         [_screenRecorder stopRecording];
@@ -63,9 +65,9 @@
 
 #pragma mark - Private
 
-- (void)setupAssetsLibraryAndScreenRecorderWithSettings:(SGASScreenRecorderSettings *)settings {
+- (void)setupAssetsLibraryAndScreenRecorder {
     _assetsLibrary = [ALAssetsLibrary new];
-    _screenRecorder = [[SGASScreenRecorder alloc] initWithSettings:settings];
+    _screenRecorder = [SGASScreenRecorder new];
     __typeof(self) __weak wself = self;
     _screenRecorder.completionBlock = ^(NSURL *videoFileURL){
         __typeof(self) sself = wself;
@@ -104,7 +106,7 @@
 
 - (void)tryRemoveTemporaryVideoFile {
     NSError * __autoreleasing error;
-    BOOL successfullyRemoved = [[NSFileManager defaultManager] removeItemAtURL:_screenRecorder.lastRecordedVideoFileURL
+    BOOL successfullyRemoved = [[NSFileManager defaultManager] removeItemAtURL:_screenRecorder.lastRecordingVideoFileURL
                                                                          error:&error];
     if (!successfullyRemoved) {
         NSLog(@"Failed to remove temporary video file: %@", error);
