@@ -191,20 +191,9 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     // pixel buffer having the same presentation time as the previous one
     // (which makes sense), so we need to keep track of the previous presentation time.
     if (CMTimeCompare(_lastFrameTime, frameTime) >= 0) {
-        // But we don't want to drop a frame too, so if we know that our framerate
-        // is equal or above that of displaylink (60fps) then we'll assume
-        // that this is the result of a rounding error and will increment
-        // previous presentation time by one ourselves to avoid dropping the frame
-        if (_lastRecordingSettings.framesPerSecond >= kDisplayLinkFrameRate) {
-            frameTime = CMTimeAdd(_lastFrameTime, CMTimeMake(1, frameTime.timescale));
-            NSLog(@"new presentation time is less than or equal to previous,"
-                  @"incrementing it manually");
-        }
-        else {
-            NSLog(@"new presentation time is less than or equal to previous,"
-                  @"dropping this frame");
-            return;
-        }
+        NSLog(@"new presentation time is less than or equal to previous,"
+              @"dropping this frame");
+        return;
     }
     _lastFrameTime = frameTime;
     
