@@ -16,9 +16,6 @@ static CGFloat const kDimension = 44.0f;
 - (id)init {
     self = [super initWithFrame:CGRectZero];
     if (self) {
-        self.windowLevel = UIWindowLevelStatusBar + 2.0f;
-        self.backgroundColor = [UIColor clearColor];
-        self.userInteractionEnabled = NO;
         [self sizeToFit];
     }
     return self;
@@ -28,7 +25,21 @@ static CGFloat const kDimension = 44.0f;
     return [self init];
 }
 
+#pragma mark - UIWindow 
+
+- (UIWindowLevel)windowLevel {
+    return UIWindowLevelStatusBar + 2.0f;
+}
+
 #pragma mark - UIView
+
+- (UIColor *)backgroundColor {
+    return [UIColor clearColor];
+}
+
+- (BOOL)isUserInteractionEnabled {
+    return NO;
+}
 
 - (void)layoutSubviews {
     // This is a pretty questionable approach...

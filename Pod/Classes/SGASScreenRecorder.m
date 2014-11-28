@@ -14,8 +14,6 @@
 #import <IOSurface/IOMobileFramebuffer.h>
 #import <IOSurface/IOSurfaceAccelerator.h>
 
-static NSInteger const kDisplayLinkFrameRate = 60;
-
 typedef struct PixelSize {
     NSUInteger width;
     NSUInteger height;
@@ -191,8 +189,6 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     // pixel buffer having the same presentation time as the previous one
     // (which makes sense), so we need to keep track of the previous presentation time.
     if (CMTimeCompare(_lastFrameTime, frameTime) >= 0) {
-        NSLog(@"new presentation time is less than or equal to previous,"
-              @"dropping this frame");
         return;
     }
     _lastFrameTime = frameTime;

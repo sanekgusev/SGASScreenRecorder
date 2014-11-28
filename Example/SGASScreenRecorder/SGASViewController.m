@@ -10,7 +10,7 @@
 #import "SGASScreenRecorderUIManager.h"
 
 @interface SGASViewController () {
-    
+    SGASScreenRecorderUIManager *_screenRecorderUIManager;
 }
 
 @property (nonatomic, strong) IBOutlet UIWebView *webView;
@@ -18,6 +18,20 @@
 @end
 
 @implementation SGASViewController
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+        _screenRecorderUIManager = [[SGASScreenRecorderUIManager alloc] initWithScreenCorner:UIRectCornerTopRight];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)aDecoder {
+    if (self = [super initWithCoder:aDecoder]) {
+        _screenRecorderUIManager = [[SGASScreenRecorderUIManager alloc] initWithScreenCorner:UIRectCornerTopRight];
+    }
+    return self;
+}
 
 - (void)viewDidLoad
 {
@@ -39,7 +53,7 @@
 }
 
 - (IBAction)toggleButtonAction {
-    [SGASScreenRecorderUIManager sharedManager].enabled = ![SGASScreenRecorderUIManager sharedManager].enabled;
+    _screenRecorderUIManager.enabled = !_screenRecorderUIManager.enabled;
 }
 
 @end

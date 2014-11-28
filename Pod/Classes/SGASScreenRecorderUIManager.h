@@ -6,13 +6,17 @@
 //
 //
 
-#import <Foundation/Foundation.h>
+#import <UIKit/UIKit.h>
 
 @interface SGASScreenRecorderUIManager : NSObject
 
-@property (nonatomic, assign) BOOL enabled;
+@property (nonatomic, assign, getter=isEnabled) BOOL enabled;
 
-+ (instancetype)sharedManager;
+- (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner
+                   overlayWindowSize:(CGSize)overlayWindowSize
+               activationTapAreaSize:(CGSize)activationTapAreaSize NS_DESIGNATED_INITIALIZER;
+
+- (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner;
 
 @end
 
