@@ -41,7 +41,7 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.theverge.com"]]];
+    [_webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.objc.io"]]];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
