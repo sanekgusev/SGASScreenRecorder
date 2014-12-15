@@ -8,7 +8,7 @@
 
 #import "SGASTouchVisualizer.h"
 #import "NSObject+SGVObjcMixin.h"
-#import "SGASApplication.h"
+#import "SGASTouchTrackingApplication.h"
 #import "SGASTouchVisualizationWindow.h"
 
 @interface SGASTouchVisualizer () {
@@ -55,13 +55,13 @@ static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.15;
         _visualizesTouches = visualizesTaps;
         NSError * __autoreleasing error;
         if (_visualizesTouches) {
-            BOOL __unused mixinResult = [[UIApplication sharedApplication] sgv_mixinClass:[SGASApplication class]
+            BOOL __unused mixinResult = [[UIApplication sharedApplication] sgv_mixinClass:[SGASTouchTrackingApplication class]
                                                                                     error:&error];
             NSCAssert(mixinResult, @"mixing in should be successful");
             [self subscribeToNotifications];
         }
         else {
-            BOOL __unused unmixinResult = [[UIApplication sharedApplication] sgv_unmixinClass:[SGASApplication class]
+            BOOL __unused unmixinResult = [[UIApplication sharedApplication] sgv_unmixinClass:[SGASTouchTrackingApplication class]
                                                                                         error:&error];
             NSCAssert(unmixinResult, @"un-mixing in should be successful");
             [self unsubscribeFromNotifications];
@@ -74,11 +74,11 @@ static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.15;
 - (void)subscribeToNotifications {
     __typeof(self) __weak wself = self;
     _applicationTouchEventObserver =
-        [[NSNotificationCenter defaultCenter] addObserverForName:SGASApplicationTouchEventNotification
+        [[NSNotificationCenter defaultCenter] addObserverForName:SGASTouchTrackingApplicationTouchEventNotification
                                                           object:nil
                                                            queue:[NSOperationQueue mainQueue]
                                                       usingBlock:^(NSNotification *note) {
-                                                          [wself handleEvent:note.userInfo[SGASApplicationTouchEventKey]];
+                                                          [wself handleEvent:note.userInfo[SGASTouchTrackingApplicationTouchEventKey]];
                                                       }];
 }
 

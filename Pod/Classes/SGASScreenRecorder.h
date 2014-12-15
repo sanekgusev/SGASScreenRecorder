@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "SGASScreenRecorderSettings.h"
 
-// Based on old versions of https://github.com/coolstar/RecordMyScreen
+// Based on of https://github.com/coolstar/RecordMyScreen
 
 typedef void(^SGASScreenRecorderCompletionBlock)(NSURL *videoFileURL);
 

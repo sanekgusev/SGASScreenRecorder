@@ -11,8 +11,8 @@
 
 @interface SGASPhotoLibraryScreenRecorder () {
     SGASScreenRecorder *_screenRecorder;
-    NSDateFormatter *_dateFormatter;
     ALAssetsLibrary *_assetsLibrary;
+    BOOL _saving;
 }
 
 @end
@@ -34,7 +34,6 @@
     if (self = [super init]) {
         _settings = settings;
         [self setupAssetsLibraryAndScreenRecorder];
-        [self setupDateFormatter];
     }
     return self;
 }
@@ -48,7 +47,7 @@
 
 - (void)setRecording:(BOOL)recording {
     if (recording) {
-        NSCAssert(!_screenRecorder.recording, @"screen recorder is already recording");
+        NSCAssert(!self.recording, @"screen recorder is already recording");
         [_screenRecorder startRecordingWithSettings:_settings
                                         toFileAtURL:[self generatedTemporaryVideoFileURL]];
     }
@@ -57,10 +56,8 @@
     }
 }
 
-#pragma mark - NSObject
-
-- (id)forwardingTargetForSelector:(SEL)aSelector {
-    return _screenRecorder;
+- (BOOL)isRecording {
+    return _screenRecorder.recording || _saving;
 }
 
 #pragma mark - Private
@@ -72,14 +69,19 @@
     _screenRecorder.completionBlock = ^(NSURL *videoFileURL){
         __typeof(self) sself = wself;
         if (sself) {
+            if (sself.recordingCompletedBlock) {
+                sself.recordingCompletedBlock();
+            }
             if ([sself->_assetsLibrary videoAtPathIsCompatibleWithSavedPhotosAlbum:videoFileURL]) {
+                sself->_saving = YES;
                 [sself->_assetsLibrary writeVideoAtPathToSavedPhotosAlbum:videoFileURL
                                                           completionBlock:^(NSURL *assetURL, NSError *error) {
                                                               __typeof(self) innerSself = wself;
                                                               if (innerSself) {
                                                                   [innerSself tryRemoveTemporaryVideoFile];
-                                                                  if (innerSself.completionBlock) {
-                                                                      innerSself.completionBlock(assetURL, error);
+                                                                  innerSself->_saving = NO;
+                                                                  if (innerSself.saveCompletedBlock) {
+                                                                      innerSself.saveCompletedBlock(assetURL, error);
                                                                   }
                                                               }
                                                           }];
@@ -91,14 +93,8 @@
     };
 }
 
-- (void)setupDateFormatter {
-    _dateFormatter = [NSDateFormatter new];
-    [_dateFormatter setDateFormat:@"dd-MM-yyyy_HH-mm-ss"];
-}
-
 - (NSURL *)generatedTemporaryVideoFileURL {
-    NSString *fileName = [NSString stringWithFormat:@"%@-%@.mp4",
-                          [_dateFormatter stringFromDate:[NSDate date]],
+    NSString *fileName = [NSString stringWithFormat:@"%@.mp4",
                           [[NSUUID UUID] UUIDString]];
     NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
     return fileURL;

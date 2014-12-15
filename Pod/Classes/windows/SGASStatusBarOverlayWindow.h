@@ -11,6 +11,7 @@
 typedef NS_ENUM(NSInteger, SGASStatusBarOverlayWindowState) {
     SGASStatusBarOverlayWindowStateIdle,
     SGASStatusBarOverlayWindowStateRecording,
+    SGASStatusBarOverlayWindowStateSaving,
 };
 
 @interface SGASStatusBarOverlayWindow : UIWindow

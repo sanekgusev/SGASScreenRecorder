@@ -27,6 +27,12 @@ static CGFloat const kDimension = 44.0f;
 
 #pragma mark - UIWindow 
 
+- (UIViewController *)rootViewController {
+    UIWindow *mainWindow = [UIApplication sharedApplication].delegate.window ?:
+    [[UIApplication sharedApplication].windows firstObject];
+    return mainWindow.rootViewController;
+}
+
 - (UIWindowLevel)windowLevel {
     return UIWindowLevelStatusBar + 2.0f;
 }

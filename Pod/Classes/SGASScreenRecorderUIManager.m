@@ -10,8 +10,9 @@
 #import "SGASStatusBarOverlayWindow.h"
 #import "SGASPhotoLibraryScreenRecorder.h"
 #import "SGASTouchVisualizer.h"
+#import "NSObject+SGVObjcMixin.h"
 
-static CGSize const kDefaultOverlayWindowSize = (CGSize){40.0f, 20.0f};
+static CGSize const kDefaultOverlayWindowSize = (CGSize){20.0f, 20.0f};
 static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
 @interface SGASScreenRecorderUIManager ()<UIGestureRecognizerDelegate> {
@@ -23,7 +24,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
     SGASPhotoLibraryScreenRecorder * _screenRecorder;
     SGASStatusBarOverlayWindow *_overlayWindow;
     UITapGestureRecognizer *_mainWindowTapRecognizer;
-    UITapGestureRecognizer *_overlayWindowTapRecognizer;
+    UITapGestureRecognizer *_statusbarWindowTapRecognizer;
     
     id _applicationDidChangeStatusbarOrientationObserver;
 }
@@ -80,12 +81,20 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 - (void)recreateScreenRecorder {
     _screenRecorder = [[SGASPhotoLibraryScreenRecorder alloc] initWithSettings:[SGASScreenRecorderSettings new]];
     __typeof(self) __weak wself = self;
-    _screenRecorder.completionBlock = ^(NSURL *assetURL, NSError *error) {
+    _screenRecorder.recordingCompletedBlock = ^{
+        __typeof(self) sself = wself;
+        if (sself) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [SGASTouchVisualizer sharedVisualizer].visualizesTouches = NO;
+                sself->_overlayWindow.state = SGASStatusBarOverlayWindowStateSaving;
+            });
+        }
+    };
+    _screenRecorder.saveCompletedBlock = ^(NSURL *assetURL, NSError *error) {
         __typeof(self) sself = wself;
         if (sself) {
             dispatch_async(dispatch_get_main_queue(), ^{
                 sself->_screenRecorder = nil;
-                [SGASTouchVisualizer sharedVisualizer].visualizesTouches = NO;
                 sself->_overlayWindow.state = SGASStatusBarOverlayWindowStateIdle;
             });
         }
@@ -156,7 +165,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
         return nil;
     }
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                             action:@selector(tapRecognizerAction:)];
+                                                                                    action:@selector(tapRecognizerAction:)];
     tapRecognizer.numberOfTapsRequired = 3;
     tapRecognizer.delegate = self;
     [window addGestureRecognizer:tapRecognizer];
@@ -165,18 +174,19 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
 - (void)recreateTapRecognizers {
     _mainWindowTapRecognizer = [self createdTapRecognizerForWindow:[self mainApplicationWindow]];
-    _overlayWindowTapRecognizer = [self createdTapRecognizerForWindow:_overlayWindow];
+    _statusbarWindowTapRecognizer = [self createdTapRecognizerForWindow:[[UIApplication sharedApplication] valueForKey:@"_statusBarWindow"]];
 }
 
 - (void)removeTapRecognizers {
     [_mainWindowTapRecognizer.view removeGestureRecognizer:_mainWindowTapRecognizer];
     _mainWindowTapRecognizer = nil;
-    [_overlayWindowTapRecognizer.view removeGestureRecognizer:_overlayWindowTapRecognizer];
-    _overlayWindowTapRecognizer = nil;
+    [_statusbarWindowTapRecognizer.view removeGestureRecognizer:_statusbarWindowTapRecognizer];
+    _statusbarWindowTapRecognizer = nil;
 }
 
 - (void)shutdownScreenRecorder {
-    _screenRecorder.completionBlock = nil;
+    _screenRecorder.recordingCompletedBlock = nil;
+    _screenRecorder.saveCompletedBlock = nil;
     _screenRecorder.recording = NO;
     _screenRecorder = nil;
 }
@@ -189,6 +199,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
                                                        queue:[NSOperationQueue mainQueue]
                                                   usingBlock:^(NSNotification *note) {
                                                       if (NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1) {
+                                                          // root VC's frame is changed after UIApplicationDidChangeStatusBarOrientationNotification is posted on iOS 7
                                                           dispatch_async(dispatch_get_main_queue(),
                                                                          ^{
                                                                              [wself updateOverlayWindowFrame];
@@ -235,18 +246,12 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
     return NO;
 }
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-    shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     if ([otherGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *otherTapRecognizer = (UITapGestureRecognizer *)otherGestureRecognizer;
-        return otherTapRecognizer.numberOfTapsRequired < 3;
+        return otherTapRecognizer.numberOfTapsRequired < 3 && otherTapRecognizer.numberOfTouchesRequired == 1;
     }
     return NO;
-}
-
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer
-shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
-    return YES;
 }
 
 @end

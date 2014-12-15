@@ -29,10 +29,11 @@ static NSUInteger const kCameraRollMaximumVideoDimension = 1660;
         _videoCompressionProperties = [@{
                                  AVVideoAverageBitRateKey      : @(2048 * 1024),
                                  AVVideoProfileLevelKey        : AVVideoProfileLevelH264HighAutoLevel,
-                                 AVVideoAllowFrameReorderingKey : @YES,
+                                 AVVideoAllowFrameReorderingKey : @NO,
                                  AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
                                  AVVideoExpectedSourceFrameRateKey: @(_framesPerSecond),
                                  } mutableCopy];
+        _shouldUseVerticalSynchronization = YES;
     }
     return self;
 }

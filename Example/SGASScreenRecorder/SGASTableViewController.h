@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SGASViewController : UIViewController
+@interface SGASTableViewController : UITableViewController
 
 @end

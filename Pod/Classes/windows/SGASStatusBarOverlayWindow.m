@@ -28,19 +28,23 @@
     }
 }
 
-#pragma mark - UIWindow 
+#pragma mark - UIView
+
+- (BOOL)isUserInteractionEnabled {
+    return NO;
+}
+
+#pragma mark - UIWindow
 
 - (UIWindowLevel)windowLevel {
     return UIWindowLevelStatusBar + 1.0f;
 }
 
-//- (UIViewController *)rootViewController {
-//    UIWindow *mainWindow = [UIApplication sharedApplication].delegate.window;
-//    if (!mainWindow) {
-//        mainWindow = [UIApplication sharedApplication].windows.firstObject;
-//    }
-//    return mainWindow.rootViewController ?: [super rootViewController];
-//}
+- (UIViewController *)rootViewController {
+    UIWindow *mainWindow = [UIApplication sharedApplication].delegate.window ?:
+        [[UIApplication sharedApplication].windows firstObject];
+    return mainWindow.rootViewController;
+}
 
 #pragma mark - Private
 
@@ -50,19 +54,25 @@
             self.backgroundColor = [UIColor colorWithRed:0x4C/(CGFloat)0xFF
                                                    green:0xD9/(CGFloat)0xFF
                                                     blue:0x64/(CGFloat)0xFF
-                                                   alpha:0.2f];
+                                                   alpha:0.5f];
             break;
         case SGASStatusBarOverlayWindowStateRecording:
             self.backgroundColor = [UIColor colorWithRed:0xFF/(CGFloat)0xFF
                                                    green:0x3B/(CGFloat)0xFF
                                                     blue:0x30/(CGFloat)0xFF
-                                                   alpha:0.2f];
+                                                   alpha:0.5f];
+            break;
+        case SGASStatusBarOverlayWindowStateSaving:
+            self.backgroundColor = [UIColor colorWithRed:0xFF/(CGFloat)0xFF
+                                                   green:0xCC/(CGFloat)0xFF
+                                                    blue:0x00/(CGFloat)0xFF
+                                                   alpha:0.5f];
             break;
         default:
             NSCAssert(NO, @"invalid state");
             break;
     }
-    self.layer.borderColor = [self.backgroundColor colorWithAlphaComponent:0.8f].CGColor;
+    self.layer.borderColor = [self.backgroundColor colorWithAlphaComponent:0.9f].CGColor;
     self.layer.borderWidth = 1.0f / [UIScreen mainScreen].scale;
 }
 
