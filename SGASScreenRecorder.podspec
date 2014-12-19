@@ -43,8 +43,7 @@ Pod::Spec.new do |s|
   end
 
   s.source_files = 'Pod/Classes/SGASScreenRecorderUIManager.{h,m}', 
-    'Pod/Classes/SGASTouchVisualizer.{h,m}', 'Pod/Classes/SGASTouchTrackingApplication.{h,m}', 'Pod/Classes/SGASTouchHandlingApplication.{h,m}',
-    'Pod/Classes/Windows/*.{h,m}'
+    'Pod/Classes/SGASTouchVisualizer.{h,m}', 'Pod/Classes/SGASTouchTrackingApplication.{h,m}', 'Pod/Classes/Windows/*.{h,m}'
   s.public_header_files = 'Pod/Classes/SGASScreenRecorderUIManager.h'
   s.frameworks = 'UIKit'
   s.dependency 'SGVObjcMixin', '~> 1.0'
@@ -56,7 +55,7 @@ Pod::Spec.new do |s|
 
   'ENABLE_STRICT_OBJC_MSGSEND' => 'YES',
 
-  #'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
+  'GCC_TREAT_WARNINGS_AS_ERRORS' => 'YES',
   'GCC_WARN_FOUR_CHARACTER_CONSTANTS' => 'YES',
   'GCC_WARN_SHADOW' => 'YES',
   'GCC_WARN_64_TO_32_BIT_CONVERSION' => 'YES',

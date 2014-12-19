@@ -25,8 +25,14 @@
     }
     if (self = [super initWithNibName:nil bundle:nil]) {
         _url = url;
+        self.hidesBottomBarWhenPushed = YES;
     }
     return self;
+}
+
+- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    [self doesNotRecognizeSelector:_cmd];
+    return [self initWithURL:nil];
 }
 
 - (void)loadView {

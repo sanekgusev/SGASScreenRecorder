@@ -33,7 +33,6 @@ static NSUInteger const kCameraRollMaximumVideoDimension = 1660;
                                  AVVideoH264EntropyModeKey: AVVideoH264EntropyModeCABAC,
                                  AVVideoExpectedSourceFrameRateKey: @(_framesPerSecond),
                                  } mutableCopy];
-        _shouldUseVerticalSynchronization = YES;
     }
     return self;
 }

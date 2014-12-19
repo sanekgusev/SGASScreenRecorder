@@ -12,6 +12,5 @@
 @property (nonatomic, copy) NSDictionary *videoCompressionProperties;
 @property (nonatomic, assign) NSUInteger framesPerSecond;
 @property (nonatomic, assign) NSUInteger maximumVideoDimension;
-@property (nonatomic, assign) BOOL shouldUseVerticalSynchronization;
 
 @end

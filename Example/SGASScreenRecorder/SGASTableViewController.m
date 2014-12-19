@@ -24,15 +24,21 @@ static NSString * const kCellReuseIdentifier = @"objc";
 
 #pragma mark - Init/dealloc
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    if (self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil]) {
+- (instancetype)initWithStyle:(UITableViewStyle)style {
+    if (self = [super initWithStyle:style]) {
         [self initializeGoodReads];
+        [self setupScreenRecorderUIManager];
         self.title = NSLocalizedString(@"Good Reads", nil);
-        _screenRecorderUIManager = [[SGASScreenRecorderUIManager alloc] initWithScreenCorner:UIRectCornerTopRight];
-        self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Toggle", nil)
-                                                                                  style:UIBarButtonItemStylePlain
-                                                                                 target:self
-                                                                                 action:@selector(toggleButtonAction)];
+        self.toolbarItems = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                            target:nil
+                                                                            action:NULL],
+                              [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Toggle Screen Recorder HUD", nil)
+                                                               style:UIBarButtonItemStylePlain
+                                                              target:self
+                                                              action:@selector(toggleButtonAction)],
+                              [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
+                                                                            target:nil
+                                                                            action:NULL]];
     }
     return self;
 }
@@ -88,6 +94,12 @@ static NSString * const kCellReuseIdentifier = @"objc";
     _goodReadsURLs = @{@"objc.io": [NSURL URLWithString:@"http://www.objc.io"],
                        @"NSHipster": [NSURL URLWithString:@"http://nshipster.com"],
                        @"NSBlog": [NSURL URLWithString:@"https://www.mikeash.com/pyblog/"]};
+}
+
+- (void)setupScreenRecorderUIManager {
+    SGASScreenRecorderSettings *settings = [SGASScreenRecorderSettings new];
+    _screenRecorderUIManager = [[SGASScreenRecorderUIManager alloc] initWithScreenCorner:UIRectCornerTopLeft
+                                                                  screenRecorderSettings:settings];
 }
 
 @end

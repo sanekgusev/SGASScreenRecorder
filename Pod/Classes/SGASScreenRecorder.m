@@ -84,10 +84,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     _lastRecordingVideoFileURL = videoFileURL;
     _lastRecordingSettings = settings;
     
-    if (_lastRecordingSettings.shouldUseVerticalSynchronization) {
-        if (![self createSurfaceAccelerator]) {
-            return;
-        }
+    if (![self createSurfaceAccelerator]) {
+        return;
     }
     
     if (![self recreatePixelBufferAndCopySurface]) {
@@ -313,35 +311,16 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 - (BOOL)recreatePixelBufferAndCopySurface {
     CVReturn pixelBufferCreationResult = kCVReturnError;
 #if !TARGET_IPHONE_SIMULATOR
-    if (_lastRecordingSettings.shouldUseVerticalSynchronization) {
-        // If Vsync is important, create a pixel buffer backed by an IOSurface instance.
-        // When capturing video, IOSurfaceAccelerator will transfer screen surface contents
-        // to this surface, without screen tearing artefacts.
-        
-        pixelBufferCreationResult = CVPixelBufferCreate(kCFAllocatorDefault,
-                                                        IOSurfaceGetWidth(_screenSurface),
-                                                        IOSurfaceGetHeight(_screenSurface),
-                                                        IOSurfaceGetPixelFormat(_screenSurface),
-                                                        (__bridge CFDictionaryRef)@{(__bridge NSString *)kCVPixelBufferIOSurfacePropertiesKey : @{}},
-                                                        &_pixelBuffer);
-    }
-    else {
-        // If Vsync is not required, then simply make a new pixel buffer object
-        // point to existing pixel data of the screen surface.
-        // When capturing video, no pixel data copies will be made at all,
-        // but at the cost of sceen tearing in the resulting video file,
-        // as captures are not synchronized precisely with screen refresh rate.
-        pixelBufferCreationResult = CVPixelBufferCreateWithBytes(kCFAllocatorDefault,
-                                                                 IOSurfaceGetWidth(_screenSurface),
-                                                                 IOSurfaceGetHeight(_screenSurface),
-                                                                 IOSurfaceGetPixelFormat(_screenSurface),
-                                                                 IOSurfaceGetBaseAddress(_screenSurface),
-                                                                 IOSurfaceGetBytesPerRow(_screenSurface),
-                                                                 NULL,
-                                                                 NULL,
-                                                                 (__bridge CFDictionaryRef)@{},
-                                                                 &_pixelBuffer);
-    }
+    // If Vsync is important, create a pixel buffer backed by an IOSurface instance.
+    // When capturing video, IOSurfaceAccelerator will transfer screen surface contents
+    // to this surface, without screen tearing artefacts.
+    
+    pixelBufferCreationResult = CVPixelBufferCreate(kCFAllocatorDefault,
+                                                    IOSurfaceGetWidth(_screenSurface),
+                                                    IOSurfaceGetHeight(_screenSurface),
+                                                    IOSurfaceGetPixelFormat(_screenSurface),
+                                                    (__bridge CFDictionaryRef)@{(__bridge NSString *)kCVPixelBufferIOSurfacePropertiesKey : @{}},
+                                                    &_pixelBuffer);
 #endif
     
     if (pixelBufferCreationResult != kCVReturnSuccess) {
@@ -349,16 +328,14 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
         return NO;
     }
     
-    if (_lastRecordingSettings.shouldUseVerticalSynchronization) {
 #if TARGET_IPHONE_SIMULATOR
-        _copySurface = NULL;
+    _copySurface = NULL;
 #else
-        _copySurface = CVPixelBufferGetIOSurface(_pixelBuffer);
+    _copySurface = CVPixelBufferGetIOSurface(_pixelBuffer);
 #endif
-        if (_copySurface == NULL) {
-            NSLog(@"failed to get surface from pixel buffer");
-            return NO;
-        }
+    if (_copySurface == NULL) {
+        NSLog(@"failed to get surface from pixel buffer");
+        return NO;
     }
     
     return YES;

@@ -1,12 +1,12 @@
 PODS:
   - SGASScreenRecorder (1.0.0):
-    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder
+    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder (= 1.0.0)
     - SGVObjcMixin (~> 1.0)
   - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder (1.0.0):
-    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder
+    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder (= 1.0.0)
     - SGVObjcMixin (~> 1.0)
   - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder (1.0.0):
-    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivateHeaders
+    - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivateHeaders (= 1.0.0)
     - SGVBackgroundRunloop (~> 1.0)
     - SGVObjcMixin (~> 1.0)
   - SGASScreenRecorder/SGASPhotoLibraryScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivateHeaders (1.0.0):
@@ -23,8 +23,8 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  SGASScreenRecorder: 74377df274aa097b9f49ef3d630f47cdd3593b1f
+  SGASScreenRecorder: cf1195252bf526fae4d5d29e01bcbef1a4d7b8a1
   SGVBackgroundRunloop: 1b37ed5008f7cb1728ccbfbed0426d63b909306d
   SGVObjcMixin: 59e6c7feecc43405988330a789f09261379678e2
 
-COCOAPODS: 0.34.4
+COCOAPODS: 0.35.0

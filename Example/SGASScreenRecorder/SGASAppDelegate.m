@@ -9,21 +9,16 @@
 #import "SGASAppDelegate.h"
 #import "SGASTableViewController.h"
 
-@interface SGASAppDelegate () {
-    SGASTableViewController *_viewController;
-}
-
-@end
-
 @implementation SGASAppDelegate
 
 @synthesize window = _window;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    _viewController = [SGASTableViewController new];
-    _window.rootViewController = [[UINavigationController alloc] initWithRootViewController:_viewController];
+    SGASTableViewController *viewController = [SGASTableViewController new];
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
+    navigationController.toolbarHidden = NO;
+    _window.rootViewController = navigationController;
     [_window makeKeyAndVisible];
     return YES;
 }

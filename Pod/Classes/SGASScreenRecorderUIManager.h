@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SGASScreenRecorderSettings.h"
 
 @interface SGASScreenRecorderUIManager : NSObject
 
@@ -14,9 +15,11 @@
 
 - (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner
                    overlayWindowSize:(CGSize)overlayWindowSize
-               activationTapAreaSize:(CGSize)activationTapAreaSize NS_DESIGNATED_INITIALIZER;
+               activationTapAreaSize:(CGSize)activationTapAreaSize
+              screenRecorderSettings:(SGASScreenRecorderSettings *)settings NS_DESIGNATED_INITIALIZER;
 
-- (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner;
+- (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner
+              screenRecorderSettings:(SGASScreenRecorderSettings *)settings;
 
 @end
 

@@ -20,6 +20,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
     UIRectCorner _screenCorner;
     CGSize _overlayWindowSize;
     CGSize _activationTapAreaSize;
+    SGASScreenRecorderSettings *_screenRecorderSettings;
     
     SGASPhotoLibraryScreenRecorder * _screenRecorder;
     SGASStatusBarOverlayWindow *_overlayWindow;
@@ -37,19 +38,32 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
 - (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner
                    overlayWindowSize:(CGSize)overlayWindowSize
-               activationTapAreaSize:(CGSize)activationTapAreaSize {
+               activationTapAreaSize:(CGSize)activationTapAreaSize
+              screenRecorderSettings:(SGASScreenRecorderSettings *)settings {
+    NSCParameterAssert(settings);
+    if (!settings) {
+        return nil;
+    }
     if (self = [super init]) {
         _screenCorner = screenCorner;
         _overlayWindowSize = overlayWindowSize;
         _activationTapAreaSize = activationTapAreaSize;
+        _screenRecorderSettings = settings;
     }
     return self;
 }
 
-- (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner {
+- (instancetype)initWithScreenCorner:(UIRectCorner)screenCorner
+              screenRecorderSettings:(SGASScreenRecorderSettings *)settings {
     return [self initWithScreenCorner:screenCorner
             overlayWindowSize:kDefaultOverlayWindowSize
-                activationTapAreaSize:kDefaultActivationTapAreaSize];
+                activationTapAreaSize:kDefaultActivationTapAreaSize
+            screenRecorderSettings:settings];
+}
+
+- (instancetype)init {
+    return [self initWithScreenCorner:UIRectCornerTopRight
+               screenRecorderSettings:[SGASScreenRecorderSettings new]];
 }
 
 - (void)dealloc {
@@ -79,7 +93,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 #pragma mark - Private
 
 - (void)recreateScreenRecorder {
-    _screenRecorder = [[SGASPhotoLibraryScreenRecorder alloc] initWithSettings:[SGASScreenRecorderSettings new]];
+    _screenRecorder = [[SGASPhotoLibraryScreenRecorder alloc] initWithSettings:_screenRecorderSettings];
     __typeof(self) __weak wself = self;
     _screenRecorder.recordingCompletedBlock = ^{
         __typeof(self) sself = wself;
