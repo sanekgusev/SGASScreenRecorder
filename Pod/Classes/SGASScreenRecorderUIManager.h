@@ -1,6 +1,6 @@
 //
 //  SGASScreenRecorderUIManager.h
-//  Pods
+//  SGASScreenRecorder
 //
 //  Created by Aleksandr Gusev on 23/10/14.
 //

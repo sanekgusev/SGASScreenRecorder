@@ -1,6 +1,6 @@
 //
 //  SGASPhotoLibraryScreenRecorder.m
-//  Pods
+//  SGASScreenRecorder
 //
 //  Created by Aleksandr Gusev on 28/10/14.
 //
@@ -12,6 +12,7 @@
 @interface SGASPhotoLibraryScreenRecorder () {
     SGASScreenRecorder *_screenRecorder;
     ALAssetsLibrary *_assetsLibrary;
+    SGASScreenRecorderSettings *_settings;
     BOOL _saving;
 }
 
@@ -23,41 +24,32 @@
 
 #pragma mark - Init/dealloc
 
-- (instancetype)initWithSettings:(SGASScreenRecorderSettings *)settings {
-    NSCParameterAssert(settings);
-    if (!settings) {
-        return nil;
-    }
+- (instancetype)init {
     if (![SGASScreenRecorder isSupported]) {
         return nil;
     }
     if (self = [super init]) {
-        _settings = settings;
         [self setupAssetsLibraryAndScreenRecorder];
     }
     return self;
 }
 
-- (instancetype)init {
-    [self doesNotRecognizeSelector:_cmd];
-    return [self initWithSettings:nil];
-}
-
 #pragma mark - Properties
-
-- (void)setRecording:(BOOL)recording {
-    if (recording) {
-        NSCAssert(!self.recording, @"screen recorder is already recording");
-        [_screenRecorder startRecordingWithSettings:_settings
-                                        toFileAtURL:[self generatedTemporaryVideoFileURL]];
-    }
-    else {
-        [_screenRecorder stopRecording];
-    }
-}
 
 - (BOOL)isRecording {
     return _screenRecorder.recording || _saving;
+}
+
+#pragma mark - Public
+
+- (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings {
+    NSCAssert(!self.recording, @"screen recorder is already recording");
+    [_screenRecorder startRecordingWithSettings:_settings
+                                    toFileAtURL:[self generatedTemporaryVideoFileURL]];
+}
+
+- (void)stopRecording {
+    [_screenRecorder stopRecording];
 }
 
 #pragma mark - Private

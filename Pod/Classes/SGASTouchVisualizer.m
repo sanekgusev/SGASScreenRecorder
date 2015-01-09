@@ -1,6 +1,6 @@
 //
-//  SGASScreenRecorderTapVisualizer.m
-//  Pods
+//  SGASTouchVisualizer.m
+//  SGASScreenRecorder
 //
 //  Created by Aleksandr Gusev on 23/10/14.
 //

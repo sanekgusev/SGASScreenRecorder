@@ -1,15 +1,13 @@
 //
-//  SRScreenRecorder.h
-//  ScreenRecorderHackaton
+//  SGASScreenRecorder.h
+//  SGASScreenRecorder
 //
 //  Created by Shmatlay Andrey on 21.06.13.
-//  Copyright (c) 2013 Shmatlay Andrey. All rights reserved.
+//  
 //
 
 #import <Foundation/Foundation.h>
 #import "SGASScreenRecorderSettings.h"
-
-// Based on of https://github.com/coolstar/RecordMyScreen
 
 typedef void(^SGASScreenRecorderCompletionBlock)(NSURL *videoFileURL);
 

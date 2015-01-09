@@ -1,6 +1,6 @@
 //
-//  SRRecorderSettings.m
-//  ScreenRecorderHackaton
+//  SGASScreenRecorderSettings.m
+//  SGASScreenRecorder
 //
 //  Created by Shmatlay Andrey on 22.06.13.
 //  Edited by Aleksandr Gusev on 23/10/14

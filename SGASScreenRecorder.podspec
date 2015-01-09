@@ -10,7 +10,7 @@
 Pod::Spec.new do |s|
   s.name             = "SGASScreenRecorder"
   s.version          = "1.0.0"
-  s.summary          = "A short description of SGASScreenRecorder."
+  s.summary          = "Real-time on-device screen recording for iOS apps."
   s.description      = <<-DESC
                        An optional longer description of SGASScreenRecorder
 

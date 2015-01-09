@@ -1,6 +1,6 @@
 //
 //  SGASPhotoLibraryScreenRecorder.h
-//  Pods
+//  SGASScreenRecorder
 //
 //  Created by Aleksandr Gusev on 28/10/14.
 //
@@ -16,10 +16,11 @@ typedef void(^SGASPhotoLibraryScreenRecorderSavingCompletedBlock)(NSURL *videoAs
 @interface SGASPhotoLibraryScreenRecorder : NSObject
 
 @property (nonatomic, readonly) SGASScreenRecorderSettings *settings;
-@property (nonatomic, assign, getter=isRecording) BOOL recording;
+@property (nonatomic, readonly, getter=isRecording) BOOL recording;
 @property (nonatomic, strong) SGASPhotoLibraryScreenRecorderRecordingCompletedBlock recordingCompletedBlock;
 @property (nonatomic, strong) SGASPhotoLibraryScreenRecorderSavingCompletedBlock saveCompletedBlock;
 
-- (instancetype)initWithSettings:(SGASScreenRecorderSettings *)settings NS_DESIGNATED_INITIALIZER;
+- (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings;
+- (void)stopRecording;
 
 @end

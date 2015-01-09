@@ -1,6 +1,6 @@
 //
 //  SGASScreenRecorderUIManager.m
-//  Pods
+//  SGASScreenRecorder
 //
 //  Created by Aleksandr Gusev on 23/10/14.
 //
@@ -93,7 +93,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 #pragma mark - Private
 
 - (void)recreateScreenRecorder {
-    _screenRecorder = [[SGASPhotoLibraryScreenRecorder alloc] initWithSettings:_screenRecorderSettings];
+    _screenRecorder = [SGASPhotoLibraryScreenRecorder new];
     __typeof(self) __weak wself = self;
     _screenRecorder.recordingCompletedBlock = ^{
         __typeof(self) sself = wself;
@@ -201,7 +201,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 - (void)shutdownScreenRecorder {
     _screenRecorder.recordingCompletedBlock = nil;
     _screenRecorder.saveCompletedBlock = nil;
-    _screenRecorder.recording = NO;
+    [_screenRecorder stopRecording];
     _screenRecorder = nil;
 }
 
@@ -235,12 +235,12 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
 - (void)tapRecognizerAction:(UITapGestureRecognizer *)tapRecognizer {
     if (_screenRecorder.recording) { //TODO: replace with recording OR saving check?
-        _screenRecorder.recording = NO;
+        [_screenRecorder stopRecording];
     }
     else {
         [self recreateScreenRecorder];
         [SGASTouchVisualizer sharedVisualizer].visualizesTouches = YES;
-        _screenRecorder.recording = YES;
+        [_screenRecorder startRecordingWithSettings:_screenRecorderSettings];
         _overlayWindow.state = SGASStatusBarOverlayWindowStateRecording;
     }
 }

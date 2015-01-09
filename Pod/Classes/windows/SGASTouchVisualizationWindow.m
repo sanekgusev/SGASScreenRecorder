@@ -1,6 +1,6 @@
 //
-//  SRMotionFingerView.m
-//  ScreenRecorderHackaton
+//  SGASTouchVisualizationWindow.m
+//  SGASScreenRecorder
 //
 //  Created by Shmatlay Andrey on 21.06.13.
 //  Edited by Aleksandr Gusev on 23/10/14
