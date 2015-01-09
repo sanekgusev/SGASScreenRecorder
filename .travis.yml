@@ -1,0 +1,4 @@
+language: objective-c
+podfile: Example/Podfile
+xcode_workspace: Example/SGASScreenRecorderDemo.xcworkspace
+xcode_scheme: SGASScreenRecorderDemo
