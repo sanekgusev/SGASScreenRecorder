@@ -15,9 +15,17 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
-    SGASTableViewController *viewController = [SGASTableViewController new];
+    SGASTableViewController *viewController = [[SGASTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
-    navigationController.toolbarHidden = NO;
+    if ([navigationController respondsToSelector:@selector(setHidesBarsOnSwipe:)]) {
+        navigationController.hidesBarsOnSwipe = YES;
+    }
+    if ([navigationController respondsToSelector:@selector(setHidesBarsWhenVerticallyCompact:)]) {
+        navigationController.hidesBarsWhenVerticallyCompact = YES;
+    }
+    if ([navigationController respondsToSelector:@selector(setHidesBarsWhenKeyboardAppears:)]) {
+        navigationController.hidesBarsWhenKeyboardAppears = YES;
+    }
     _window.rootViewController = navigationController;
     [_window makeKeyAndVisible];
     return YES;

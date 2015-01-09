@@ -4,7 +4,7 @@
 
 Super-efficient, highly convenient, and easily configurable screen recording for iOS apps.
 
-:warning: This is only meant to be used during development in debug and in-house testing builds and is completely **NOT** App Store-safe.
+**Warning**: This is only meant to be used during development in debug and in-house testing builds and is completely **NOT** App Store-safe.
 
 ### What
 
@@ -12,7 +12,7 @@ It allows you to continuously record whatever is happening on the device's scree
 
 ### How
 
-Screen capture is done using low-level functions from the `IOKit`, `IOSurface` and `IOMobileFramebuffer` *private* frameworks. This mostly boils down to `IOMobileFramebufferGetLayerDefaultSurface` and `IOSurfaceAcceleratorTransferSurface` calls.
+Screen capture is done using low-level functions from the `IOKit`, `IOSurface` and `IOMobileFramebuffer` *private* frameworks. This mostly boils down to `IOMobileFramebufferGetLayerDefaultSurface()` and `IOSurfaceAcceleratorTransferSurface()` calls.
 
 Capturing is done from a callback of a `CADisplayLink` scheduled on a background thread's runloop to minimize performance impact on application code. There's no busy waiting and no operations are performed on the main thread during capture.
 
@@ -23,7 +23,7 @@ Capturing is done from a callback of a `CADisplayLink` scheduled on a background
 
 ### What's Inside
 
-* Configurable screen recorder
+* Screen recorder
 * Photo library import for recorded videos
 * Screen corner overlay UI for convenient integration
 * On-screen touch visualization during screen recording
@@ -63,7 +63,7 @@ To initialize the screen recording UI overlay, run something along the following
 }
 ```
 
-:grey_exclamation: Make sure to use compile-time checks/preprocessor macros to prevent this code from getting to App Store builds.
+Make sure to use compile-time checks/preprocessor macros to prevent this code from getting to App Store builds.
 
 Feel free to peek into the demo project for more details.
 

@@ -18,7 +18,8 @@
 
 @end
 
-static NSString * const kCellReuseIdentifier = @"objc";
+static NSString * const kSwitchCellReuseIdentifier = @"SwitchCell";
+static NSString * const kGoodReadCellReuseIdentifier = @"GoodReadCell";
 
 @implementation SGASTableViewController
 
@@ -28,17 +29,7 @@ static NSString * const kCellReuseIdentifier = @"objc";
     if (self = [super initWithStyle:style]) {
         [self initializeGoodReads];
         [self setupScreenRecorderUIManager];
-        self.title = NSLocalizedString(@"Good Reads", nil);
-        self.toolbarItems = @[[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                            target:nil
-                                                                            action:NULL],
-                              [[UIBarButtonItem alloc] initWithTitle:NSLocalizedString(@"Toggle Screen Recorder HUD", nil)
-                                                               style:UIBarButtonItemStylePlain
-                                                              target:self
-                                                              action:@selector(toggleButtonAction)],
-                              [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace
-                                                                            target:nil
-                                                                            action:NULL]];
+        self.title = NSLocalizedString(@"SGASScreenRecorder", nil);
     }
     return self;
 }
@@ -49,7 +40,9 @@ static NSString * const kCellReuseIdentifier = @"objc";
 {
     [super viewDidLoad];
     [self.tableView registerClass:[UITableViewCell class]
-           forCellReuseIdentifier:kCellReuseIdentifier];
+           forCellReuseIdentifier:kSwitchCellReuseIdentifier];
+    [self.tableView registerClass:[UITableViewCell class]
+           forCellReuseIdentifier:kGoodReadCellReuseIdentifier];
 }
 
 - (NSUInteger)supportedInterfaceOrientations {
@@ -58,31 +51,68 @@ static NSString * const kCellReuseIdentifier = @"objc";
 
 #pragma mark - Actions
 
-- (void)toggleButtonAction {
-    _screenRecorderUIManager.enabled = !_screenRecorderUIManager.enabled;
+- (void)switchValueChanged:(UISwitch *)aSwitch {
+    _screenRecorderUIManager.enabled = aSwitch.on;
 }
 
 #pragma mark - UITableViewDataSource
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 2;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    if (section == 0) {
+        return 1;
+    }
     return (NSInteger)[_goodReadsTitles count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView
          cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kCellReuseIdentifier
-                                                            forIndexPath:indexPath];
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.text = _goodReadsTitles[(NSUInteger)[indexPath row]];
+    UITableViewCell *cell;
+    if ([indexPath section] == 0) {
+        cell = [tableView dequeueReusableCellWithIdentifier:kSwitchCellReuseIdentifier
+                                               forIndexPath:indexPath];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        if (!cell.accessoryView) {
+            UISwitch *aSwitch = [UISwitch new];
+            [aSwitch addTarget:self
+                        action:@selector(switchValueChanged:)
+              forControlEvents:UIControlEventValueChanged];
+            cell.accessoryView = aSwitch;
+        }
+        cell.textLabel.text = NSLocalizedString(@"Screen Recorder Overlay", nil);
+    }
+    else {
+        cell = [tableView dequeueReusableCellWithIdentifier:kGoodReadCellReuseIdentifier
+                                               forIndexPath:indexPath];
+        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        cell.textLabel.text = _goodReadsTitles[(NSUInteger)[indexPath row]];
+    }
     return cell;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+    return section == 0 ? NSLocalizedString(@"Triple tap the overlay square to record", nil) : nil;
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return section == 0 ? nil : NSLocalizedString(@"Some Good Reads", nil);
 }
 
 #pragma mark - UITableViewDelegate
 
+- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [indexPath section] == 0 ? nil : indexPath;
+}
+
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSURL *url = _goodReadsURLs[_goodReadsTitles[(NSUInteger)[indexPath row]]];
-    [self.navigationController pushViewController:[[SGASWebViewController alloc] initWithURL:url]
-                                         animated:YES];
+    if ([indexPath section] != 0) {
+        NSURL *url = _goodReadsURLs[_goodReadsTitles[(NSUInteger)[indexPath row]]];
+        [self.navigationController pushViewController:[[SGASWebViewController alloc] initWithURL:url]
+                                             animated:YES];
+    }
 }
 
 #pragma mark - Private

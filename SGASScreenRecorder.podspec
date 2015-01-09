@@ -10,12 +10,20 @@
 Pod::Spec.new do |s|
   s.name             = "SGASScreenRecorder"
   s.version          = "1.0.0"
-  s.summary          = "Real-time on-device screen recording for iOS apps."
+  s.summary          = "Efficient on-device screen recording for iOS apps."
   s.description      = <<-DESC
-                       An optional longer description of SGASScreenRecorder
+  					   Record whatever is happening on your device's screen while your app is in foreground.
+  					   
+  					   Features:
+  					   
+  					   * low performance impact
+  					   * low memory footprint
+  					   * save recordings to a video file or import into Photo Library
+  					   * touch visualization during recording
+  					   * simple overlay UI to start/stop recording
 
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
+                       To be only used in development and in-house builds, *not* App Store-safe at all.
+
                        DESC
   s.homepage         = "https://github.com/sanekgusev/SGASScreenRecorder"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
