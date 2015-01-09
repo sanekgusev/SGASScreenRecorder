@@ -9,6 +9,7 @@
 #import "SGASScreenRecorder.h"
 #import <AVFoundation/AVFoundation.h>
 #import <UIKit/UIKit.h>
+#import <MobileCoreServices/MobileCoreServices.h>
 #import "SGVBackgroundRunloop.h"
 #import <IOSurface/IOSurface.h>
 #import <IOSurface/IOMobileFramebuffer.h>
@@ -66,8 +67,22 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 #if TARGET_IPHONE_SIMULATOR
     return NO;
 #else
-    return YES;
+    return (IOServiceGetMatchingService != NULL) &&
+        (IOServiceMatching != NULL) &&
+        (IOMobileFramebufferOpen != NULL) &&
+        (IOMobileFramebufferGetLayerDefaultSurface != NULL) &&
+        (IOSurfaceAcceleratorCreate != NULL) &&
+        (IOSurfaceAcceleratorTransferSurface != NULL) &&
+        (IOSurfaceGetWidth != NULL) &&
+        (IOSurfaceGetHeight != NULL) &&
+        (IOSurfaceGetPixelFormat != NULL) &&
+        (CVPixelBufferGetIOSurface != NULL);
 #endif
+}
+
++ (NSString *)preferredVideoFileExtension {
+    return (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(kUTTypeMPEG4,
+                                                                         kUTTagClassFilenameExtension);
 }
 
 - (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings
@@ -88,7 +103,7 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
         return;
     }
     
-    if (![self recreatePixelBufferAndCopySurface]) {
+    if (![self recreatePixelBufferAndGetCopySurface]) {
         return;
     }
     
@@ -130,8 +145,9 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
             [sself finishWritingWithCompletion:^{
                 __typeof(self) innerSself = wself;
                 if (innerSself) {
-                    if (innerSself->_completionBlock) {
-                        innerSself->_completionBlock(innerSself->_lastRecordingVideoFileURL);
+                    __typeof(innerSself.completionBlock) completionBlock = innerSself.completionBlock;
+                    if (completionBlock) {
+                        completionBlock(innerSself->_lastRecordingVideoFileURL);
                     }
                 }
                 [innerSself releaseVideoWriter];
@@ -192,10 +208,8 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     }
     _lastFrameTime = frameTime;
     
-    if (_copySurface) {
-        if (![self performSurfaceCopy]) {
-            return;
-        }
+    if (![self performSurfaceCopy]) {
+        return;
     }
     
     BOOL pixelBufferAppendResult = [_pixelBufferAdaptor appendPixelBuffer:_pixelBuffer
@@ -308,13 +322,9 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     }
 }
 
-- (BOOL)recreatePixelBufferAndCopySurface {
+- (BOOL)recreatePixelBufferAndGetCopySurface {
     CVReturn pixelBufferCreationResult = kCVReturnError;
 #if !TARGET_IPHONE_SIMULATOR
-    // If Vsync is important, create a pixel buffer backed by an IOSurface instance.
-    // When capturing video, IOSurfaceAccelerator will transfer screen surface contents
-    // to this surface, without screen tearing artefacts.
-    
     pixelBufferCreationResult = CVPixelBufferCreate(kCFAllocatorDefault,
                                                     IOSurfaceGetWidth(_screenSurface),
                                                     IOSurfaceGetHeight(_screenSurface),
@@ -407,18 +417,20 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
     outputHeight = IOSurfaceGetHeight(_screenSurface);
 #endif
     
-    if (outputWidth > outputHeight) {
-        if (outputWidth > _lastRecordingSettings.maximumVideoDimension) {
-            double heightToWidthRatio = (double)outputHeight / (double)outputWidth;
-            outputWidth = _lastRecordingSettings.maximumVideoDimension;
-            outputHeight = (NSUInteger)round(outputWidth * heightToWidthRatio);
+    if (_lastRecordingSettings.maximumVideoDimension) {
+        if (outputWidth > outputHeight) {
+            if (outputWidth > [_lastRecordingSettings.maximumVideoDimension unsignedIntegerValue]) {
+                double heightToWidthRatio = (double)outputHeight / (double)outputWidth;
+                outputWidth = [_lastRecordingSettings.maximumVideoDimension unsignedIntegerValue];
+                outputHeight = (NSUInteger)round(outputWidth * heightToWidthRatio);
+            }
         }
-    }
-    else {
-        if (outputHeight > _lastRecordingSettings.maximumVideoDimension) {
-            double widthToHeightRatio = (double)outputWidth / (double)outputHeight;
-            outputHeight = _lastRecordingSettings.maximumVideoDimension;
-            outputWidth = (NSUInteger)round(outputHeight * widthToHeightRatio);
+        else {
+            if (outputHeight > [_lastRecordingSettings.maximumVideoDimension unsignedIntegerValue]) {
+                double widthToHeightRatio = (double)outputWidth / (double)outputHeight;
+                outputHeight = [_lastRecordingSettings.maximumVideoDimension unsignedIntegerValue];
+                outputWidth = (NSUInteger)round(outputHeight * widthToHeightRatio);
+            }
         }
     }
     
@@ -443,7 +455,7 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
         return NO;
     }
     
-    NSCAssert(_pixelBuffer, @"_copySurfacePixelBuffer must not be NULL");
+    NSCAssert(_pixelBuffer, @"_pixelBuffer must not be NULL");
     
     CMVideoFormatDescriptionRef videoFormatDescription = NULL;
     OSStatus formatDescriptionResult = CMVideoFormatDescriptionCreateForImageBuffer(kCFAllocatorDefault,

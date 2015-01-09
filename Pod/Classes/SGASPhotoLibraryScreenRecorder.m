@@ -9,6 +9,8 @@
 #import "SGASPhotoLibraryScreenRecorder.h"
 #import "SGASScreenRecorder.h"
 
+static NSInteger const kCameraRollMaximumVideoDimension = 1660;
+
 @interface SGASPhotoLibraryScreenRecorder () {
     SGASScreenRecorder *_screenRecorder;
     ALAssetsLibrary *_assetsLibrary;
@@ -43,7 +45,18 @@
 #pragma mark - Public
 
 - (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings {
+    NSCParameterAssert(settings);
+    if (!settings) {
+        return;
+    }
     NSCAssert(!self.recording, @"screen recorder is already recording");
+    if (self.recording) {
+        return;
+    }
+    _settings = settings;
+    _settings.maximumVideoDimension = _settings.maximumVideoDimension ?
+        @(MIN([_settings.maximumVideoDimension integerValue], kCameraRollMaximumVideoDimension)) :
+        @(kCameraRollMaximumVideoDimension);
     [_screenRecorder startRecordingWithSettings:_settings
                                     toFileAtURL:[self generatedTemporaryVideoFileURL]];
 }
@@ -61,8 +74,9 @@
     _screenRecorder.completionBlock = ^(NSURL *videoFileURL){
         __typeof(self) sself = wself;
         if (sself) {
-            if (sself.recordingCompletedBlock) {
-                sself.recordingCompletedBlock();
+            __typeof(sself.recordingCompletedBlock) recordingCompletedBlock = sself.recordingCompletedBlock;
+            if (recordingCompletedBlock) {
+                recordingCompletedBlock();
             }
             if ([sself->_assetsLibrary videoAtPathIsCompatibleWithSavedPhotosAlbum:videoFileURL]) {
                 sself->_saving = YES;
@@ -72,8 +86,9 @@
                                                               if (innerSself) {
                                                                   [innerSself tryRemoveTemporaryVideoFile];
                                                                   innerSself->_saving = NO;
-                                                                  if (innerSself.saveCompletedBlock) {
-                                                                      innerSself.saveCompletedBlock(assetURL, error);
+                                                                  __typeof(innerSself.saveCompletedBlock) saveCompletedBlock = innerSself.saveCompletedBlock;
+                                                                  if (saveCompletedBlock) {
+                                                                      saveCompletedBlock(assetURL, error);
                                                                   }
                                                               }
                                                           }];
@@ -86,8 +101,8 @@
 }
 
 - (NSURL *)generatedTemporaryVideoFileURL {
-    NSString *fileName = [NSString stringWithFormat:@"%@.mp4",
-                          [[NSUUID UUID] UUIDString]];
+    NSString *fileName = [NSString stringWithFormat:@"%@.%@",
+                          [[NSUUID UUID] UUIDString], [SGASScreenRecorder preferredVideoFileExtension]];
     NSURL *fileURL = [NSURL fileURLWithPath:[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]];
     return fileURL;
 }

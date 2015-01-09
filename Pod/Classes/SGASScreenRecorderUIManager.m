@@ -15,6 +15,9 @@
 static CGSize const kDefaultOverlayWindowSize = (CGSize){20.0f, 20.0f};
 static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
+static NSInteger const kNumberOfTaps = 3;
+static NSInteger const kNumberOfTouches = 1;
+
 @interface SGASScreenRecorderUIManager ()<UIGestureRecognizerDelegate> {
     
     UIRectCorner _screenCorner;
@@ -105,6 +108,9 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
         }
     };
     _screenRecorder.saveCompletedBlock = ^(NSURL *assetURL, NSError *error) {
+        if (error) {
+            NSLog(@"Failed to save recorded video to photo library: %@", error);
+        }
         __typeof(self) sself = wself;
         if (sself) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -180,7 +186,8 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
     }
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self
                                                                                     action:@selector(tapRecognizerAction:)];
-    tapRecognizer.numberOfTapsRequired = 3;
+    tapRecognizer.numberOfTapsRequired = kNumberOfTaps;
+    tapRecognizer.numberOfTouchesRequired = kNumberOfTouches;
     tapRecognizer.delegate = self;
     [window addGestureRecognizer:tapRecognizer];
     return tapRecognizer;
@@ -188,7 +195,10 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
 - (void)recreateTapRecognizers {
     _mainWindowTapRecognizer = [self createdTapRecognizerForWindow:[self mainApplicationWindow]];
-    _statusbarWindowTapRecognizer = [self createdTapRecognizerForWindow:[[UIApplication sharedApplication] valueForKey:@"_statusBarWindow"]];
+    UIWindow *statusBarWindow = [[UIApplication sharedApplication] valueForKey:@"_statusBarWindow"];
+    if (statusBarWindow) {
+        _statusbarWindowTapRecognizer = [self createdTapRecognizerForWindow:statusBarWindow];
+    }
 }
 
 - (void)removeTapRecognizers {
@@ -234,7 +244,7 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 #pragma mark - tap recognizer
 
 - (void)tapRecognizerAction:(UITapGestureRecognizer *)tapRecognizer {
-    if (_screenRecorder.recording) { //TODO: replace with recording OR saving check?
+    if (_screenRecorder.recording) {
         [_screenRecorder stopRecording];
     }
     else {
@@ -263,7 +273,8 @@ static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldBeRequiredToFailByGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer {
     if ([otherGestureRecognizer isKindOfClass:[UITapGestureRecognizer class]]) {
         UITapGestureRecognizer *otherTapRecognizer = (UITapGestureRecognizer *)otherGestureRecognizer;
-        return otherTapRecognizer.numberOfTapsRequired < 3 && otherTapRecognizer.numberOfTouchesRequired == 1;
+        return otherTapRecognizer.numberOfTapsRequired < kNumberOfTaps &&
+            otherTapRecognizer.numberOfTouchesRequired == kNumberOfTouches;
     }
     return NO;
 }

@@ -33,7 +33,7 @@ Pod::Spec.new do |s|
     pls.subspec 'SGASScreenRecorder' do |srs|
       srs.source_files = 'Pod/Classes/SGASScreenRecorder.{h,m}', 'Pod/Classes/SGASScreenRecorderSettings.{h,m}'
       srs.dependency 'SGVBackgroundRunloop', '~> 1.0'
-      srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia'
+      srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia', 'MobileCoreServices'
       srs.subspec 'SGASScreenRecorderPrivateHeaders' do |phs|
       	phs.source_files = 'Pod/PrivateHeaders/**/*.h'
       	phs.private_header_files = 'Pod/PrivateHeaders/**/*.h'
@@ -51,7 +51,7 @@ Pod::Spec.new do |s|
   s.xcconfig = { 
 
   'FRAMEWORK_SEARCH_PATHS' => '"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks"/**',
-  'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -framework IOSurface -framework IOMobileFramebuffer -framework IOKit',
+  'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -weak_framework IOSurface -weak_framework IOMobileFramebuffer -weak_framework IOKit',
 
   'ENABLE_STRICT_OBJC_MSGSEND' => 'YES',
 

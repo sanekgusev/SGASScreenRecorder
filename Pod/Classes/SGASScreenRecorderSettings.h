@@ -15,6 +15,7 @@
 @property (nonatomic, copy) NSDictionary *videoCompressionProperties;
 
 /// Desired framerate. Doesn't make sense to specify values above 60.
+/// Default is 60.
 @property (nonatomic, assign) NSUInteger framesPerSecond;
 
 /// Maximum pixel dimension of the video. If either of the screen dimensions
@@ -22,6 +23,7 @@
 /// so that neither width nor height exceed this value.
 /// This is useful when importing videos to the Photo library, as it will
 /// not allow videos above certain size (e.g. full-resolution Retina iPad captures).
-@property (nonatomic, assign) NSUInteger maximumVideoDimension;
+/// Default is nil.
+@property (nonatomic, strong) NSNumber *maximumVideoDimension;
 
 @end

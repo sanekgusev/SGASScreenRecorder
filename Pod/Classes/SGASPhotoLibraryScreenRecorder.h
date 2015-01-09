@@ -17,8 +17,8 @@ typedef void(^SGASPhotoLibraryScreenRecorderSavingCompletedBlock)(NSURL *videoAs
 
 @property (nonatomic, readonly) SGASScreenRecorderSettings *settings;
 @property (nonatomic, readonly, getter=isRecording) BOOL recording;
-@property (nonatomic, strong) SGASPhotoLibraryScreenRecorderRecordingCompletedBlock recordingCompletedBlock;
-@property (nonatomic, strong) SGASPhotoLibraryScreenRecorderSavingCompletedBlock saveCompletedBlock;
+@property (atomic, strong) SGASPhotoLibraryScreenRecorderRecordingCompletedBlock recordingCompletedBlock;
+@property (atomic, strong) SGASPhotoLibraryScreenRecorderSavingCompletedBlock saveCompletedBlock;
 
 - (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings;
 - (void)stopRecording;

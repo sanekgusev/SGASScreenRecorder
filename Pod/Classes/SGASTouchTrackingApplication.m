@@ -29,6 +29,11 @@ NSString * const SGASTouchTrackingApplicationTouchEventKey = @"SGASApplicationTo
                                                             object:self
                                                           userInfo:@{SGASTouchTrackingApplicationTouchEventKey: event}];
     }
+    
+    // the following fiddling with objc_super is to ensure that we call the
+    // superclass implementation on the actual superclass of the application object
+    // when this method will me 'mixed-in', and not on UIApplication,
+    // which is the superclass of SGASTouchTrackingApplication at compile time
     struct objc_super sup;
     sup.receiver = self;
     sup.super_class = class_getSuperclass(object_getClass(self));

@@ -17,12 +17,13 @@ typedef void(^SGASScreenRecorderCompletionBlock)(NSURL *videoFileURL);
 
 @property (nonatomic, readonly, getter=isRecording) BOOL recording;
 
-@property (nonatomic, strong) SGASScreenRecorderCompletionBlock completionBlock;
+@property (atomic, strong) SGASScreenRecorderCompletionBlock completionBlock;
 
 - (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings
                        toFileAtURL:(NSURL *)videoFileURL;
 - (void)stopRecording;
 
 + (BOOL)isSupported;
++ (NSString *)preferredVideoFileExtension;
 
 @end

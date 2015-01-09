@@ -20,20 +20,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		02CB3C40E8262061DD5A29AF /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		3362FCF44AA25FB6C07AA3D3 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorderDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		39A677CCF5E5B4B4490AB5EF /* SGASScreenRecorder.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SGASScreenRecorder.podspec; path = ../SGASScreenRecorder.podspec; sourceTree = "<group>"; };
-		5BAB5AA3E9E38E1525CF4831 /* Pods-SGASScreenRecorder.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorder.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorder/Pods-SGASScreenRecorder.debug.xcconfig"; sourceTree = "<group>"; };
-		5DA8F4D060CE5C23E716DBA8 /* libPods-SGASScreenRecorder.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SGASScreenRecorder.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* SGASScreenRecorderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SGASScreenRecorderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
-		732A08427E0D965003BFA605 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		75DAA0457AA5576E62FDEB11 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		A9A4ADED5CBFE8D5E0BEB8B8 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		AD69F811DB63E79BE9F3DFDF /* libPods-SGASScreenRecorderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SGASScreenRecorderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		BE440563DD366F5049EC8232 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DEC593A0333839132F38437C /* Pods-SGASScreenRecorderDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorderDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo.release.xcconfig"; sourceTree = "<group>"; };
 		F30ED5F91A5FBCAF002E62FE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F30ED5FA1A5FBCAF002E62FE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
@@ -45,7 +40,6 @@
 		F30ED6001A5FBCAF002E62FE /* SGASTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGASTableViewController.m; sourceTree = "<group>"; };
 		F30ED6011A5FBCAF002E62FE /* SGASWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGASWebViewController.h; sourceTree = "<group>"; };
 		F30ED6021A5FBCAF002E62FE /* SGASWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGASWebViewController.m; sourceTree = "<group>"; };
-		F36C69BF28E13C263B40A9D2 /* Pods-SGASScreenRecorder.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorder.release.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorder/Pods-SGASScreenRecorder.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,8 +82,6 @@
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
-				5DA8F4D060CE5C23E716DBA8 /* libPods-SGASScreenRecorder.a */,
-				BE440563DD366F5049EC8232 /* libPods-Tests.a */,
 				AD69F811DB63E79BE9F3DFDF /* libPods-SGASScreenRecorderDemo.a */,
 			);
 			name = Frameworks;
@@ -108,10 +100,6 @@
 		C31BFEFF105A883C6A907F3F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				5BAB5AA3E9E38E1525CF4831 /* Pods-SGASScreenRecorder.debug.xcconfig */,
-				F36C69BF28E13C263B40A9D2 /* Pods-SGASScreenRecorder.release.xcconfig */,
-				02CB3C40E8262061DD5A29AF /* Pods-Tests.debug.xcconfig */,
-				732A08427E0D965003BFA605 /* Pods-Tests.release.xcconfig */,
 				3362FCF44AA25FB6C07AA3D3 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */,
 				DEC593A0333839132F38437C /* Pods-SGASScreenRecorderDemo.release.xcconfig */,
 			);
