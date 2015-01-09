@@ -6,21 +6,26 @@ Efficient, convenient, and configurable screen recorder for iOS apps.
 
 **NOTE:** This is only meant to be used during development in debug and in-house testing builds and is completely **NOT** Appstore-safe.
 
-### What it does:
+### What
 
 It allows you to continuosly record whatever is happening on the screen while your app is in foreground and save this recording either to an mp4 file or to device's photo library.
 
-### How it works:
+### How
 
-Screen capture is done using low-level functions from the IOKit, IOSurface and IOMobileFramebuffer private frameworks.
+Screen capture is done using low-level functions from the `IOKit`, `IOSurface` and `IOMobileFramebuffer` private frameworks.
 
 Capturing is done from a callback of a display link running in a background thread to minimize performance impact on application code. There's no busy waiting and no operations are performed on the main thread during capture.
 
-### What's included:
+### Why
 
-# Screen recorder
-# Photo library export support
-# Status bar overlay HUD UI for convenient integration
+* because recording in-app activities has never been simpler
+* because a video is worth a thousand words, especially if those words are in a bug report
+
+### What's in:
+
+* Screen recorder
+* Photo library export support
+* Status bar overlay HUD UI for convenient integration
 
 ## Usage
 
@@ -28,8 +33,8 @@ To run the example project, run `pod try SGASScreenRecorder`.
 
 ## Requirements
 
-# iOS 7.0 and above
-# iOS Device only. Will compile and build for iOS Simulator too, but will not do anything.
+* iOS 7.0 and above
+* iOS Device only. Will compile and build for iOS Simulator too, but will not do anything.
 
 ## Installation
 
