@@ -325,7 +325,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "SGASScreenRecorderDemo/SGASScreenRecorderDemo-Info.plist";
 				PRODUCT_NAME = SGASScreenRecorderDemo;
-				PROVISIONING_PROFILE = "02331606-ef7e-45ad-a48c-206b1c559239";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -338,7 +337,6 @@
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "SGASScreenRecorderDemo/SGASScreenRecorderDemo-Info.plist";
 				PRODUCT_NAME = SGASScreenRecorderDemo;
-				PROVISIONING_PROFILE = "02331606-ef7e-45ad-a48c-206b1c559239";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
