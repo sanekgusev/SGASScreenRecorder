@@ -1,12 +1,3 @@
-#
-# Be sure to run `pod lib lint SGASScreenRecorder.podspec' to ensure this is a
-# valid spec and remove all comments before submitting the spec.
-#
-# Any lines starting with a # are optional, but encouraged
-#
-# To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
-#
-
 Pod::Spec.new do |s|
   s.name             = "SGASScreenRecorder"
   s.version          = "1.0.0"
@@ -26,7 +17,7 @@ Pod::Spec.new do |s|
 
                        DESC
   s.homepage         = "https://github.com/sanekgusev/SGASScreenRecorder"
-  # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
+  s.screenshots      = "https://cloud.githubusercontent.com/assets/1178649/5689239/f76d606e-9861-11e4-9213-e048fbfe9f61.PNG"
   s.license          = 'MIT'
   s.author           = { "Alexander Gusev" => "sanekgusev@gmail.com" }
   s.source           = { :git => "https://github.com/sanekgusev/SGASScreenRecorder.git", :tag => s.version.to_s }
