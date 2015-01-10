@@ -1,7 +1,5 @@
 # SGASScreenRecorder :movie_camera:
 
-[![CI Status](http://img.shields.io/travis/Alexander Gusev/SGASScreenRecorder.svg?style=flat)](https://travis-ci.org/Alexander Gusev/SGASScreenRecorder)
-
 Super-efficient, highly convenient, and easily configurable screen recording for iOS apps.
 
 **Warning**: This is only meant to be used during development in debug and in-house testing builds and is completely **NOT** App Store-safe.
