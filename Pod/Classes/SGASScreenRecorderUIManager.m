@@ -31,6 +31,7 @@ static NSInteger const kNumberOfTouches = 1;
     UITapGestureRecognizer *_statusbarWindowTapRecognizer;
     
     id _applicationDidChangeStatusbarOrientationObserver;
+    id _windowDidBecomeKeyObserver;
 }
 
 @end
@@ -153,6 +154,11 @@ static NSInteger const kNumberOfTouches = 1;
     [self updateOverlayWindowFrame];
 }
 
+- (void)toggleOverlayWindowVisibility {
+    _overlayWindow.hidden = YES;
+    _overlayWindow.hidden = NO;
+}
+
 - (void)updateOverlayWindowFrame {
     UIView *rootViewControllerView = [self mainApplicationWindow].rootViewController.view;
     NSCAssert(rootViewControllerView, @"rootViewController's view is nil");
@@ -233,11 +239,24 @@ static NSInteger const kNumberOfTouches = 1;
                                                           [wself updateOverlayWindowFrame];
                                                       }
                                                   }];
+    _windowDidBecomeKeyObserver =
+    [[NSNotificationCenter defaultCenter] addObserverForName:UIWindowDidBecomeKeyNotification
+                                                      object:nil
+                                                       queue:[NSOperationQueue mainQueue]
+                                                  usingBlock:^(NSNotification *note) {
+                                                      dispatch_async(dispatch_get_main_queue(),
+                                                                     ^{
+                                                                         [wself toggleOverlayWindowVisibility];
+                                                                     });
+                                                  }];
 }
 
 - (void)unsubscribeFromNotifications {
     if (_applicationDidChangeStatusbarOrientationObserver) {
         [[NSNotificationCenter defaultCenter] removeObserver:_applicationDidChangeStatusbarOrientationObserver];
+    }
+    if (_windowDidBecomeKeyObserver) {
+        [[NSNotificationCenter defaultCenter] removeObserver:_windowDidBecomeKeyObserver];
     }
 }
 
