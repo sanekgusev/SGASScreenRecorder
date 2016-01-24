@@ -10,7 +10,7 @@
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		EBF60E5CFBA328EBE8451465 /* libPods-SGASScreenRecorderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = AD69F811DB63E79BE9F3DFDF /* libPods-SGASScreenRecorderDemo.a */; };
+		DAE3308020CBB78FADEFE4D3 /* libPods-SGASScreenRecorderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 762B53E0682C015B644E0BE6 /* libPods-SGASScreenRecorderDemo.a */; };
 		F30ED6031A5FBCAF002E62FE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = F30ED5F81A5FBCAF002E62FE /* InfoPlist.strings */; };
 		F30ED6041A5FBCAF002E62FE /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F30ED5FA1A5FBCAF002E62FE /* Images.xcassets */; };
 		F30ED6051A5FBCAF002E62FE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = F30ED5FB1A5FBCAF002E62FE /* main.m */; };
@@ -20,16 +20,16 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		3362FCF44AA25FB6C07AA3D3 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorderDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		3961C7825992324CA2A283C2 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorderDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		39A677CCF5E5B4B4490AB5EF /* SGASScreenRecorder.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = SGASScreenRecorder.podspec; path = ../SGASScreenRecorder.podspec; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* SGASScreenRecorderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SGASScreenRecorderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		75DAA0457AA5576E62FDEB11 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
+		762B53E0682C015B644E0BE6 /* libPods-SGASScreenRecorderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SGASScreenRecorderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8FCA8AFF913EAF3A4E9F6AFF /* Pods-SGASScreenRecorderDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorderDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo.release.xcconfig"; sourceTree = "<group>"; };
 		A9A4ADED5CBFE8D5E0BEB8B8 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		AD69F811DB63E79BE9F3DFDF /* libPods-SGASScreenRecorderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-SGASScreenRecorderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		DEC593A0333839132F38437C /* Pods-SGASScreenRecorderDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SGASScreenRecorderDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo.release.xcconfig"; sourceTree = "<group>"; };
 		F30ED5F91A5FBCAF002E62FE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		F30ED5FA1A5FBCAF002E62FE /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		F30ED5FB1A5FBCAF002E62FE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -50,7 +50,7 @@
 				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
 				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
 				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
-				EBF60E5CFBA328EBE8451465 /* libPods-SGASScreenRecorderDemo.a in Frameworks */,
+				DAE3308020CBB78FADEFE4D3 /* libPods-SGASScreenRecorderDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,7 +64,7 @@
 				F30ED5F71A5FBCAF002E62FE /* SGASScreenRecorderDemo */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
-				C31BFEFF105A883C6A907F3F /* Pods */,
+				7F06B0D3495198B56083D80A /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -82,7 +82,7 @@
 				6003F58D195388D20070C39A /* Foundation.framework */,
 				6003F58F195388D20070C39A /* CoreGraphics.framework */,
 				6003F591195388D20070C39A /* UIKit.framework */,
-				AD69F811DB63E79BE9F3DFDF /* libPods-SGASScreenRecorderDemo.a */,
+				762B53E0682C015B644E0BE6 /* libPods-SGASScreenRecorderDemo.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -97,11 +97,11 @@
 			name = "Podspec Metadata";
 			sourceTree = "<group>";
 		};
-		C31BFEFF105A883C6A907F3F /* Pods */ = {
+		7F06B0D3495198B56083D80A /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				3362FCF44AA25FB6C07AA3D3 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */,
-				DEC593A0333839132F38437C /* Pods-SGASScreenRecorderDemo.release.xcconfig */,
+				3961C7825992324CA2A283C2 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */,
+				8FCA8AFF913EAF3A4E9F6AFF /* Pods-SGASScreenRecorderDemo.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -130,11 +130,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "SGASScreenRecorderDemo" */;
 			buildPhases = (
-				A509C34306370BD4A51ABCC6 /* Check Pods Manifest.lock */,
+				0D2AA52075950F053D2B6864 /* Check Pods Manifest.lock */,
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				348F6D958A8E9DD2195ED952 /* Copy Pods Resources */,
+				FB60376B552C49593DEF3786 /* Embed Pods Frameworks */,
+				20B6FD094AC0E95DEFD14A38 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -152,7 +153,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = SGAS;
-				LastUpgradeCheck = 0510;
+				LastUpgradeCheck = 0730;
 				ORGANIZATIONNAME = "Alexander Gusev";
 			};
 			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "SGASScreenRecorderDemo" */;
@@ -186,7 +187,22 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		348F6D958A8E9DD2195ED952 /* Copy Pods Resources */ = {
+		0D2AA52075950F053D2B6864 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		20B6FD094AC0E95DEFD14A38 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -201,19 +217,19 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A509C34306370BD4A51ABCC6 /* Check Pods Manifest.lock */ = {
+		FB60376B552C49593DEF3786 /* Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "Embed Pods Frameworks";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-SGASScreenRecorderDemo/Pods-SGASScreenRecorderDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -262,6 +278,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -318,12 +335,13 @@
 		};
 		6003F5C0195388D20070C39A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3362FCF44AA25FB6C07AA3D3 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */;
+			baseConfigurationReference = 3961C7825992324CA2A283C2 /* Pods-SGASScreenRecorderDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = "SGASScreenRecorderDemo/SGASScreenRecorderDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SGASScreenRecorderDemo;
 				WRAPPER_EXTENSION = app;
 			};
@@ -331,11 +349,12 @@
 		};
 		6003F5C1195388D20070C39A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = DEC593A0333839132F38437C /* Pods-SGASScreenRecorderDemo.release.xcconfig */;
+			baseConfigurationReference = 8FCA8AFF913EAF3A4E9F6AFF /* Pods-SGASScreenRecorderDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				INFOPLIST_FILE = "SGASScreenRecorderDemo/SGASScreenRecorderDemo-Info.plist";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = SGASScreenRecorderDemo;
 				WRAPPER_EXTENSION = app;
 			};

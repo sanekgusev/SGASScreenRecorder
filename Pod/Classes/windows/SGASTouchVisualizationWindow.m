@@ -84,7 +84,7 @@ static CGFloat const kDimension = 44.0f;
     CGGradientRef gradient = CGGradientCreateWithColors(colorSpace, (__bridge CFArrayRef)colors, locations);
     CGPoint center = CGPointMake(CGRectGetMidX(rect),
                                  CGRectGetMidY(rect));
-    CGContextDrawRadialGradient(context, gradient, center, 0, center, CGRectGetWidth(rect) / 2.0f, kNilOptions);
+    CGContextDrawRadialGradient(context, gradient, center, 0, center, CGRectGetWidth(rect) / 2.0f, (CGGradientDrawingOptions)0);
     self.layer.contents = (__bridge_transfer id)CGBitmapContextCreateImage(context);
     
     CGGradientRelease(gradient);

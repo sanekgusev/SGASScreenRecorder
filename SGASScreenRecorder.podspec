@@ -1,12 +1,14 @@
 Pod::Spec.new do |s|
   s.name             = "SGASScreenRecorder"
-  s.version          = "1.0.0"
+  s.version          = "1.1.0"
   s.summary          = "Efficient on-device screen recording for iOS apps."
+  s.cocoapods_version = '>= 1.0.0.beta2'
+
   s.description      = <<-DESC
   					   Record whatever is happening on your device's screen while your app is in foreground.
-  					   
+
   					   Features:
-  					   
+
   					   * low performance impact
   					   * low memory footprint
   					   * save recordings to a video file or import into Photo Library
@@ -23,8 +25,7 @@ Pod::Spec.new do |s|
   s.source           = { :git => "https://github.com/sanekgusev/SGASScreenRecorder.git", :tag => s.version.to_s }
   s.social_media_url = 'https://twitter.com/sanekgusev'
 
-  s.platform     = :ios, '7.0'
-  s.requires_arc = true
+  s.ios.deployment_target = '7.0'
 
   s.subspec 'SGASScreenRecorder' do |srs|
     srs.source_files = 'Pod/Classes/SGASScreenRecorder.{h,m}', 'Pod/Classes/SGASScreenRecorderSettings.{h,m}'
@@ -43,13 +44,13 @@ Pod::Spec.new do |s|
 	pls.dependency 'SGASScreenRecorder/SGASScreenRecorder'
   end
 
-  s.source_files = 'Pod/Classes/SGASScreenRecorderUIManager.{h,m}', 
+  s.source_files = 'Pod/Classes/SGASScreenRecorderUIManager.{h,m}',
     'Pod/Classes/SGASTouchVisualizer.{h,m}', 'Pod/Classes/SGASTouchTrackingApplication.{h,m}', 'Pod/Classes/Windows/*.{h,m}'
   s.public_header_files = 'Pod/Classes/SGASScreenRecorderUIManager.h'
   s.frameworks = 'UIKit'
   s.dependency 'SGVObjcMixin', '~> 1.0'
 
-  s.xcconfig = { 
+  s.pod_target_xcconfig = {
 
   'FRAMEWORK_SEARCH_PATHS' => '"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks"/**',
   'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -weak_framework IOSurface -weak_framework IOMobileFramebuffer -weak_framework IOKit',

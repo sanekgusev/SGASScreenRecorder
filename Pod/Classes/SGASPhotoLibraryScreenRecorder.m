@@ -9,6 +9,8 @@
 #import "SGASPhotoLibraryScreenRecorder.h"
 #import "SGASScreenRecorder.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSInteger const kCameraRollMaximumVideoDimension = 1660;
 
 @interface SGASPhotoLibraryScreenRecorder () {
@@ -117,3 +119,5 @@ static NSInteger const kCameraRollMaximumVideoDimension = 1660;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

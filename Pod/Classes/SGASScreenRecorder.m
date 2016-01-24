@@ -15,6 +15,8 @@
 #import <IOSurface/IOMobileFramebuffer.h>
 #import <IOSurface/IOSurfaceAccelerator.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark - Private Declarations
 extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 
@@ -80,7 +82,7 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 #endif
 }
 
-+ (NSString *)preferredVideoFileExtension {
++ (nullable NSString *)preferredVideoFileExtension {
     return (__bridge_transfer NSString *)UTTypeCopyPreferredTagWithClass(kUTTypeMPEG4,
                                                                          kUTTagClassFilenameExtension);
 }
@@ -510,3 +512,5 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

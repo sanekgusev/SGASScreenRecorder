@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SGASScreenRecorderSettings : NSObject
 
 /// This dictionary will be passed as a value of AVVideoCompressionPropertiesKey
@@ -24,6 +26,8 @@
 /// This is useful when importing videos to the Photo library, as it will
 /// not allow videos above certain size (e.g. full-resolution Retina iPad captures).
 /// Default is nil.
-@property (nonatomic, strong) NSNumber *maximumVideoDimension;
+@property (nonatomic, strong, nullable) NSNumber *maximumVideoDimension;
 
 @end
+
+NS_ASSUME_NONNULL_END

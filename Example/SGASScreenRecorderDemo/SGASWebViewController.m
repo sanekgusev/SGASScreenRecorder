@@ -8,6 +8,8 @@
 
 #import "SGASWebViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SGASWebViewController () <UIWebViewDelegate> {
     UIWebView *_webView;
 }
@@ -29,11 +31,6 @@
     return self;
 }
 
-- (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    [self doesNotRecognizeSelector:_cmd];
-    return [self initWithURL:nil];
-}
-
 - (void)loadView {
     _webView = [UIWebView new];
     _webView.delegate = self;
@@ -47,7 +44,7 @@
     }
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;
 }
 
@@ -58,3 +55,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

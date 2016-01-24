@@ -10,6 +10,8 @@
 #import "SGASScreenRecorderSettings.h"
 #import <AVFoundation/AVFoundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 static NSInteger const kDefaultVideoBitRate = 2048 * 1024;
 
 @interface SGASScreenRecorderSettings () {
@@ -61,3 +63,5 @@ static NSInteger const kDefaultVideoBitRate = 2048 * 1024;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -21,11 +21,13 @@ DEPENDENCIES:
 
 EXTERNAL SOURCES:
   SGASScreenRecorder:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
-  SGASScreenRecorder: 9032147bf8478c0e58cd0c0f12d45054091b1fd3
-  SGVBackgroundRunloop: 1b37ed5008f7cb1728ccbfbed0426d63b909306d
-  SGVObjcMixin: 59e6c7feecc43405988330a789f09261379678e2
+  SGASScreenRecorder: c321fd62678161eac00ebc60fed4c34e10cfa69a
+  SGVBackgroundRunloop: d2f6f0b438c98caefdb0ac7ff63588a364c52c45
+  SGVObjcMixin: 0f6562626c60c115eb24db96833e33d4c2325722
 
-COCOAPODS: 0.36.0.beta.1
+PODFILE CHECKSUM: 3c8b119894ddc7506361fa30bcec467be411f9ce
+
+COCOAPODS: 1.0.0.beta.2

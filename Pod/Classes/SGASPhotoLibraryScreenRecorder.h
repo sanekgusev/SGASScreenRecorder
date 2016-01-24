@@ -10,17 +10,21 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "SGASScreenRecorderSettings.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void(^SGASPhotoLibraryScreenRecorderRecordingCompletedBlock)(void);
 typedef void(^SGASPhotoLibraryScreenRecorderSavingCompletedBlock)(NSURL *videoAssetURL, NSError *error);
 
 @interface SGASPhotoLibraryScreenRecorder : NSObject
 
-@property (nonatomic, readonly) SGASScreenRecorderSettings *settings;
+@property (nonatomic, readonly, nullable) SGASScreenRecorderSettings *settings;
 @property (nonatomic, readonly, getter=isRecording) BOOL recording;
-@property (atomic, strong) SGASPhotoLibraryScreenRecorderRecordingCompletedBlock recordingCompletedBlock;
-@property (atomic, strong) SGASPhotoLibraryScreenRecorderSavingCompletedBlock saveCompletedBlock;
+@property (atomic, strong, nullable) SGASPhotoLibraryScreenRecorderRecordingCompletedBlock recordingCompletedBlock;
+@property (atomic, strong, nullable) SGASPhotoLibraryScreenRecorderSavingCompletedBlock saveCompletedBlock;
 
 - (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings;
 - (void)stopRecording;
 
 @end
+
+NS_ASSUME_NONNULL_END

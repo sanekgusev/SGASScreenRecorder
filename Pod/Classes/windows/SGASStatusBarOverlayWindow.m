@@ -8,6 +8,8 @@
 
 #import "SGASStatusBarOverlayWindow.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation SGASStatusBarOverlayWindow
 
 #pragma mark - Init/dealloc
@@ -40,7 +42,7 @@
     return UIWindowLevelStatusBar + 1.0f;
 }
 
-- (UIViewController *)rootViewController {
+- (nullable UIViewController *)rootViewController {
     UIWindow *mainWindow = [UIApplication sharedApplication].delegate.window ?:
         [[UIApplication sharedApplication].windows firstObject];
     return mainWindow.rootViewController;
@@ -77,3 +79,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

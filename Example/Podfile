@@ -1,5 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'SGASScreenRecorderDemo', :exclusive => true do
+target 'SGASScreenRecorderDemo' do
+  platform :ios, '7.0'
   pod "SGASScreenRecorder", :path => "../"
 end

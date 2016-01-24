@@ -11,6 +11,8 @@
 #import "SGASTouchTrackingApplication.h"
 #import "SGASTouchVisualizationWindow.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SGASTouchVisualizer () {
     id _applicationTouchEventObserver;
     NSHashTable *_reusableWindows;
@@ -162,3 +164,4 @@ static NSTimeInterval const kTouchFadeInFadeOutDuration = 0.15;
 
 @end
 
+NS_ASSUME_NONNULL_END

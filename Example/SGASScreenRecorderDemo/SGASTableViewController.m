@@ -10,6 +10,8 @@
 #import "SGASScreenRecorderUIManager.h"
 #import "SGASWebViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SGASTableViewController () {
     SGASScreenRecorderUIManager *_screenRecorderUIManager;
     NSArray *_goodReadsTitles;
@@ -45,7 +47,7 @@ static NSString * const kGoodReadCellReuseIdentifier = @"GoodReadCell";
            forCellReuseIdentifier:kGoodReadCellReuseIdentifier];
 }
 
-- (NSUInteger)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskAll;
 }
 
@@ -93,17 +95,17 @@ static NSString * const kGoodReadCellReuseIdentifier = @"GoodReadCell";
     return cell;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
+- (nullable NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section {
     return section == 0 ? NSLocalizedString(@"Triple tap the overlay square to record", nil) : nil;
 }
 
-- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+- (nullable NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
     return section == 0 ? nil : NSLocalizedString(@"Some Good Reads", nil);
 }
 
 #pragma mark - UITableViewDelegate
 
-- (NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (nullable NSIndexPath *)tableView:(UITableView *)tableView willSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     return [indexPath section] == 0 ? nil : indexPath;
 }
 
@@ -133,3 +135,5 @@ static NSString * const kGoodReadCellReuseIdentifier = @"GoodReadCell";
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

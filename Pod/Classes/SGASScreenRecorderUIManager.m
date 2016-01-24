@@ -12,6 +12,8 @@
 #import "SGASTouchVisualizer.h"
 #import "NSObject+SGVObjcMixin.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 static CGSize const kDefaultOverlayWindowSize = (CGSize){20.0f, 20.0f};
 static CGSize const kDefaultActivationTapAreaSize = (CGSize){44.0f, 44.0f};
 
@@ -300,3 +302,4 @@ static NSInteger const kNumberOfTouches = 1;
 
 @end
 
+NS_ASSUME_NONNULL_END

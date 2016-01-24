@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import "SGASScreenRecorderSettings.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef void(^SGASScreenRecorderCompletionBlock)(NSURL *videoFileURL);
 
 @interface SGASScreenRecorder : NSObject
@@ -17,13 +19,15 @@ typedef void(^SGASScreenRecorderCompletionBlock)(NSURL *videoFileURL);
 
 @property (nonatomic, readonly, getter=isRecording) BOOL recording;
 
-@property (atomic, strong) SGASScreenRecorderCompletionBlock completionBlock;
+@property (atomic, strong, nullable) SGASScreenRecorderCompletionBlock completionBlock;
 
 - (void)startRecordingWithSettings:(SGASScreenRecorderSettings *)settings
                        toFileAtURL:(NSURL *)videoFileURL;
 - (void)stopRecording;
 
 + (BOOL)isSupported;
-+ (NSString *)preferredVideoFileExtension;
++ (nullable NSString *)preferredVideoFileExtension;
 
 @end
+
+NS_ASSUME_NONNULL_END

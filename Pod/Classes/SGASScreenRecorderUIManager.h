@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "SGASScreenRecorderSettings.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface SGASScreenRecorderUIManager : NSObject
 
 @property (nonatomic, assign, getter=isEnabled) BOOL enabled;
@@ -23,3 +25,4 @@
 
 @end
 
+NS_ASSUME_NONNULL_END

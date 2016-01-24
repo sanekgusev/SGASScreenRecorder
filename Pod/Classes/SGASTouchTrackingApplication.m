@@ -9,6 +9,8 @@
 #import "SGASTouchTrackingApplication.h"
 #import <objc/message.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 NSString * const SGASTouchTrackingApplicationTouchEventNotification = @"SGASApplicationTouchEventNotification";
 NSString * const SGASTouchTrackingApplicationTouchEventKey = @"SGASApplicationTouchEventKey";
 
@@ -41,3 +43,5 @@ NSString * const SGASTouchTrackingApplicationTouchEventKey = @"SGASApplicationTo
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

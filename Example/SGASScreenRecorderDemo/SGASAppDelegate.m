@@ -9,11 +9,13 @@
 #import "SGASAppDelegate.h"
 #import "SGASTableViewController.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @implementation SGASAppDelegate
 
 @synthesize window = _window;
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(nullable NSDictionary *)launchOptions {
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     SGASTableViewController *viewController = [[SGASTableViewController alloc] initWithStyle:UITableViewStyleGrouped];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:viewController];
@@ -32,3 +34,5 @@
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSInteger, SGASStatusBarOverlayWindowState) {
     SGASStatusBarOverlayWindowStateIdle,
     SGASStatusBarOverlayWindowStateRecording,
@@ -17,4 +19,8 @@ typedef NS_ENUM(NSInteger, SGASStatusBarOverlayWindowState) {
 @interface SGASStatusBarOverlayWindow : UIWindow
 @property (nonatomic, assign) SGASStatusBarOverlayWindowState state;
 
+- (instancetype)initWithCoder:(NSCoder *)aDecoder NS_UNAVAILABLE;
+
 @end
+
+NS_ASSUME_NONNULL_END
