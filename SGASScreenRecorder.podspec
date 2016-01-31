@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
     srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia', 'MobileCoreServices'
     srs.weak_frameworks = 'IOSurface', 'IOKit', 'IOMobileFramebuffer'
     srs.vendored_frameworks = 'Pod/PrivateFrameworks/8.4/IOMobileFramebuffer.framework', 'Pod/PrivateFrameworks/8.4/IOSurface.framework'
-    srs.header_mappings_dir = 'Pod/PrivateHeaders'
+    #srs.header_mappings_dir = 'Pod/PrivateHeaders'
   end
 
   s.subspec 'SGASPhotoLibraryScreenRecorder' do |pls|
