@@ -3,6 +3,7 @@
 [![Version](https://img.shields.io/cocoapods/v/SGASScreenRecorder.svg?style=flat)](http://cocoapods.org/pods/SGASScreenRecorder)
 [![License](https://img.shields.io/cocoapods/l/SGASScreenRecorder.svg?style=flat)](http://cocoapods.org/pods/SGASScreenRecorder)
 [![Platform](https://img.shields.io/cocoapods/p/SGASScreenRecorder.svg?style=flat)](http://cocoapods.org/pods/SGASScreenRecorder)
+[![CI Status](http://img.shields.io/travis/sanekgusev/SGASScreenRecorder.svg?style=flat)](https://travis-ci.org/sanekgusev/SGASScreenRecorder)
 
 ##### Unfortunately, this no longer works when running on iOS 9.x. The behavior of `IOMobileFramebufferGetLayerDefaultSurface()` function has changed and it seems that there is no longer a way to access the screen's surface to capture video samples from. More details can be found in StackOverflow answer by [@jvisenti](https://github.com/jvisenti) here: http://stackoverflow.com/a/32512999/1987487.
 
