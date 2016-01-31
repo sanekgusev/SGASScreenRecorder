@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "SGASScreenRecorder"
-  s.version          = "1.1.0"
+  s.version          = "1.0.1"
   s.summary          = "Efficient on-device screen recording for iOS apps."
   s.cocoapods_version = '>= 1.0.0.beta2'
 
@@ -29,19 +29,25 @@ Pod::Spec.new do |s|
 
   s.subspec 'SGASScreenRecorder' do |srs|
     srs.source_files = 'Pod/Classes/SGASScreenRecorder.{h,m}', 'Pod/Classes/SGASScreenRecorderSettings.{h,m}'
+    srs.public_header_files = 'Pod/Classes/SGASScreenRecorder.h', 'Pod/Classes/SGASScreenRecorderSettings.h'
     srs.dependency 'SGVBackgroundRunloop', '~> 1.0'
     srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia', 'MobileCoreServices'
+    srs.weak_frameworks = 'IOSurface', 'IOKit'
+    srs.vendored_frameworks = 'Pod/PrivateFrameworks/8.4/IOMobileFramebuffer.framework'
+    srs.preserve_paths = 'Pod/PrivateFrameworks/**/*.framework'
+
     srs.subspec 'SGASScreenRecorderPrivateHeaders' do |phs|
-  	  phs.source_files = 'Pod/PrivateHeaders/**/*.h'
-  	  phs.private_header_files = 'Pod/PrivateHeaders/**/*.h'
+      phs.source_files = 'Pod/PrivateHeaders/**/*.h'
+      phs.private_header_files = 'Pod/PrivateHeaders/**/*.h'
       phs.header_mappings_dir = 'Pod/PrivateHeaders'
+      phs.preserve_paths = 'Pod/PrivateHeaders/**/*.h'
     end
   end
 
   s.subspec 'SGASPhotoLibraryScreenRecorder' do |pls|
     pls.source_files = 'Pod/Classes/SGASPhotoLibraryScreenRecorder.{h,m}'
     pls.frameworks = 'AssetsLibrary'
-	pls.dependency 'SGASScreenRecorder/SGASScreenRecorder'
+    pls.dependency 'SGASScreenRecorder/SGASScreenRecorder'
   end
 
   s.source_files = 'Pod/Classes/SGASScreenRecorderUIManager.{h,m}',
@@ -51,9 +57,6 @@ Pod::Spec.new do |s|
   s.dependency 'SGVObjcMixin', '~> 1.0'
 
   s.pod_target_xcconfig = {
-
-  'FRAMEWORK_SEARCH_PATHS' => '"$(SDKROOT)$(SYSTEM_LIBRARY_DIR)/PrivateFrameworks"/**',
-  'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -weak_framework IOSurface -weak_framework IOMobileFramebuffer -weak_framework IOKit',
 
   'ENABLE_STRICT_OBJC_MSGSEND' => 'YES',
 

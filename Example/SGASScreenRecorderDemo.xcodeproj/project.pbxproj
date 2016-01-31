@@ -17,6 +17,7 @@
 		F30ED6061A5FBCAF002E62FE /* SGASAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = F30ED5FD1A5FBCAF002E62FE /* SGASAppDelegate.m */; };
 		F30ED6081A5FBCAF002E62FE /* SGASTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F30ED6001A5FBCAF002E62FE /* SGASTableViewController.m */; };
 		F30ED6091A5FBCAF002E62FE /* SGASWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F30ED6021A5FBCAF002E62FE /* SGASWebViewController.m */; };
+		F394B0D81C57D2FB00270ACC /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F394B0D71C57D2FB00270ACC /* Launch Screen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		F30ED6001A5FBCAF002E62FE /* SGASTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGASTableViewController.m; sourceTree = "<group>"; };
 		F30ED6011A5FBCAF002E62FE /* SGASWebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SGASWebViewController.h; sourceTree = "<group>"; };
 		F30ED6021A5FBCAF002E62FE /* SGASWebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SGASWebViewController.m; sourceTree = "<group>"; };
+		F394B0D71C57D2FB00270ACC /* Launch Screen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,6 +121,7 @@
 				F30ED6001A5FBCAF002E62FE /* SGASTableViewController.m */,
 				F30ED6011A5FBCAF002E62FE /* SGASWebViewController.h */,
 				F30ED6021A5FBCAF002E62FE /* SGASWebViewController.m */,
+				F394B0D71C57D2FB00270ACC /* Launch Screen.storyboard */,
 			);
 			path = SGASScreenRecorderDemo;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F394B0D81C57D2FB00270ACC /* Launch Screen.storyboard in Resources */,
 				F30ED6031A5FBCAF002E62FE /* InfoPlist.strings in Resources */,
 				F30ED6041A5FBCAF002E62FE /* Images.xcassets in Resources */,
 			);
@@ -293,7 +297,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -326,7 +330,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;

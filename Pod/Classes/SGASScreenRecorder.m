@@ -69,16 +69,16 @@ extern IOSurfaceRef CVPixelBufferGetIOSurface(CVPixelBufferRef pixelBuffer);
 #if TARGET_IPHONE_SIMULATOR
     return NO;
 #else
-    return (IOServiceGetMatchingService != NULL) &&
-        (IOServiceMatching != NULL) &&
-        (IOMobileFramebufferOpen != NULL) &&
-        (IOMobileFramebufferGetLayerDefaultSurface != NULL) &&
-        (IOSurfaceAcceleratorCreate != NULL) &&
-        (IOSurfaceAcceleratorTransferSurface != NULL) &&
-        (IOSurfaceGetWidth != NULL) &&
-        (IOSurfaceGetHeight != NULL) &&
-        (IOSurfaceGetPixelFormat != NULL) &&
-        (CVPixelBufferGetIOSurface != NULL);
+    return (&IOServiceGetMatchingService != NULL) &&
+        (&IOServiceMatching != NULL) &&
+        (&IOMobileFramebufferOpen != NULL) &&
+        (&IOMobileFramebufferGetLayerDefaultSurface != NULL) &&
+        (&IOSurfaceAcceleratorCreate != NULL) &&
+        (&IOSurfaceAcceleratorTransferSurface != NULL) &&
+        (&IOSurfaceGetWidth != NULL) &&
+        (&IOSurfaceGetHeight != NULL) &&
+        (&IOSurfaceGetPixelFormat != NULL) &&
+        (&CVPixelBufferGetIOSurface != NULL);
 #endif
 }
 

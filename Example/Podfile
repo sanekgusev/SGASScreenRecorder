@@ -1,6 +1,6 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
 target 'SGASScreenRecorderDemo' do
-  platform :ios, '7.0'
+  platform :ios, '9.0'
   pod "SGASScreenRecorder", :path => "../"
 end
