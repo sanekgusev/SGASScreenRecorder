@@ -14,4 +14,3 @@ install:
 - bundle exec pod install --project-directory=Example
 script:
 - set -o pipefail && xcodebuild build -workspace Example/SGASScreenRecorderDemo.xcworkspace -scheme SGASScreenRecorderDemo -sdk iphoneos ONLY_ACTIVE_ARCH=NO | xcpretty
-- bundle exec pod lib lint
