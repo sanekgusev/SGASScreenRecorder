@@ -7,10 +7,10 @@ PODS:
     - SGASScreenRecorder/SGASScreenRecorder
     - SGVObjcMixin (~> 1.0)
   - SGASScreenRecorder/SGASScreenRecorder (1.0.1):
-    - SGASScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivateHeaders (= 1.0.1)
+    - SGASScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivate (= 1.0.1)
     - SGVBackgroundRunloop (~> 1.0)
     - SGVObjcMixin (~> 1.0)
-  - SGASScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivateHeaders (1.0.1):
+  - SGASScreenRecorder/SGASScreenRecorder/SGASScreenRecorderPrivate (1.0.1):
     - SGVBackgroundRunloop (~> 1.0)
     - SGVObjcMixin (~> 1.0)
   - SGVBackgroundRunloop (1.0.0)
@@ -24,7 +24,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  SGASScreenRecorder: a77f8a4e69c66869ea048ea3bbc4a422fcc071fa
+  SGASScreenRecorder: 0141a219ba056296c4451da4bb1108462dd59bea
   SGVBackgroundRunloop: d2f6f0b438c98caefdb0ac7ff63588a364c52c45
   SGVObjcMixin: 0f6562626c60c115eb24db96833e33d4c2325722
 
