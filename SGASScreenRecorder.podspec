@@ -42,6 +42,7 @@ Pod::Spec.new do |s|
       phs.source_files = 'Pod/PrivateHeaders/**/*.h'
       phs.private_header_files = 'Pod/PrivateHeaders/**/*.h'
       phs.header_mappings_dir = 'Pod/PrivateHeaders'
+      phs.header_dir = 'PrivateHeaders'
     end
   end
 
