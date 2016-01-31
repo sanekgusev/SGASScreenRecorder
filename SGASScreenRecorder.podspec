@@ -32,12 +32,6 @@ Pod::Spec.new do |s|
     srs.public_header_files = 'Pod/Classes/SGASScreenRecorder.h', 'Pod/Classes/SGASScreenRecorderSettings.h'
     srs.dependency 'SGVBackgroundRunloop', '~> 1.0'
     srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia', 'MobileCoreServices'
-    #srs.weak_frameworks = 'IOSurface', 'IOKit', 'IOMobileFramebuffer'
-    #srs.vendored_frameworks = 'Pod/PrivateFrameworks/8.4/IOMobileFramebuffer.framework', 'Pod/PrivateFrameworks/8.4/IOSurface.framework'
-    #srs.preserve_paths = 'Pod/PrivateFrameworks/**/*.framework'
-    # srs.user_target_xcconfig = {
-    #   'FRAMEWORK_SEARCH_PATHS' => '"${PODS_ROOT}/SGASScreenRecorder/Pod/PrivateFrameworks/8.4"'
-    # }
 
     srs.subspec 'SGASScreenRecorderPrivate' do |phs|
       phs.source_files = 'Pod/PrivateHeaders/**/*.h'
