@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
     srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia', 'MobileCoreServices'
     srs.weak_frameworks = 'IOSurface', 'IOKit', 'IOMobileFramebuffer'
     srs.user_target_xcconfig = {
-      'FRAMEWORK_SEARCH_PATHS' => '/Users/agusev/github/SGASScreenRecorder/Pod/PrivateFrameworks/8.4/',
+      'FRAMEWORK_SEARCH_PATHS' => '${PODS_ROOT}/SGASScreenRecorder/Pod/PrivateFrameworks/8.4/',
     }
     srs.preserve_paths = 'Pod/PrivateFrameworks/**/*.framework'
 
@@ -42,7 +42,6 @@ Pod::Spec.new do |s|
       phs.source_files = 'Pod/PrivateHeaders/**/*.h'
       phs.private_header_files = 'Pod/PrivateHeaders/**/*.h'
       phs.header_mappings_dir = 'Pod/PrivateHeaders'
-      phs.preserve_paths = 'Pod/PrivateHeaders/**/*.h'
     end
   end
 
