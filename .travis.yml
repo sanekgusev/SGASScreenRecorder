@@ -1,4 +1,17 @@
+# references:
+# * http://www.objc.io/issue-6/travis-ci.html
+# * https://github.com/supermarin/xcpretty#usage
+
 language: objective-c
+osx_image: xcode7.3
+notifications:
+  email: false
 podfile: Example/Podfile
-xcode_workspace: Example/SGASScreenRecorderDemo.xcworkspace
-xcode_scheme: SGASScreenRecorderDemo
+before_install:
+- rvm --default use 2.2
+install:
+- bundle install
+- bundle exec pod install --project-directory=Example
+script:
+- set -o pipefail && xcodebuild build -workspace Example/SGASScreenRecorderDemo.xcworkspace -scheme SGASScreenRecorderDemo -sdk iphoneos9.2 ONLY_ACTIVE_ARCH=NO | xcpretty
+- bundle exec pod lib lint
