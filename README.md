@@ -1,5 +1,7 @@
 # SGASScreenRecorder :movie_camera:
 
+##### Unfortunately, this no longer works when running on iOS 9.x. The behavior of `IOMobileFramebufferGetLayerDefaultSurface()` function has changed at it seems that there is no longer a way to access the screen's surface to capture video samples from. More details can be found in StackOverflow answer by [@jvisenti](https://github.com/jvisenti) here: http://stackoverflow.com/a/32512999/1987487.
+
 Super-efficient, highly convenient, and easily configurable screen recording for iOS apps.
 
 **Warning**: This is only meant to be used during development in debug and in-house testing builds and is completely **NOT** App Store-safe.
