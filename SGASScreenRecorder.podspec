@@ -28,13 +28,18 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '7.0'
 
   s.subspec 'SGASScreenRecorder' do |srs|
-    srs.source_files = 'Pod/Classes/SGASScreenRecorder.{h,m}', 'Pod/Classes/SGASScreenRecorderSettings.{h,m}', 'Pod/PrivateHeaders/**/*.h'
+    srs.source_files = 'Pod/Classes/SGASScreenRecorder.{h,m}', 'Pod/Classes/SGASScreenRecorderSettings.{h,m}'
     srs.public_header_files = 'Pod/Classes/SGASScreenRecorder.h', 'Pod/Classes/SGASScreenRecorderSettings.h'
     srs.dependency 'SGVBackgroundRunloop', '~> 1.0'
     srs.frameworks = 'UIKit', 'AVFoundation', 'CoreMedia', 'MobileCoreServices'
     srs.weak_frameworks = 'IOSurface', 'IOKit', 'IOMobileFramebuffer'
     srs.vendored_frameworks = 'Pod/PrivateFrameworks/8.4/IOMobileFramebuffer.framework', 'Pod/PrivateFrameworks/8.4/IOSurface.framework'
-    srs.header_mappings_dir = 'Pod/PrivateHeaders'
+
+    srs.subspec 'SGASScreenRecorderPrivateHeaders' do |phs|
+      phs.source_files = 'Pod/PrivateHeaders/**/*.h'
+      phs.private_header_files = 'Pod/PrivateHeaders/**/*.h'
+      phs.header_mappings_dir = 'Pod/PrivateHeaders'
+    end
   end
 
   s.subspec 'SGASPhotoLibraryScreenRecorder' do |pls|
