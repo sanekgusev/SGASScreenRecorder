@@ -13,4 +13,4 @@ install:
 - bundle install
 - bundle exec pod install --project-directory=Example
 script:
-- set -o pipefail && xcodebuild build -workspace Example/SGASScreenRecorderDemo.xcworkspace -scheme SGASScreenRecorderDemo CODE_SIGN_IDENTITY=- -sdk iphoneos ONLY_ACTIVE_ARCH=NO | xcpretty
+- set -o pipefail && xcodebuild build -workspace Example/SGASScreenRecorderDemo.xcworkspace -scheme SGASScreenRecorder -sdk iphoneos ONLY_ACTIVE_ARCH=NO | xcpretty
