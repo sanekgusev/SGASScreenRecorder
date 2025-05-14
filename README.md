@@ -91,9 +91,7 @@ This project was initially based on the early versions of [RecordMyScreen](https
 
 I can be bugged via the following:
 
-* [@sanekgusev](https://twitter.com/sanekgusev) on Twitter
-* [@sanekgusev](https://telegram.me/sanekgusev) on Telegram
-* [sanekgusev@gmail.com](mailto:sanekgusev@gmail.com)
+* [@sanekgusev](https://x.com/sanekgusev) on X
 
 
 ## License
